@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "description": "Token Curated Registry MVP",
   "scripts": {
+    "lint": "solium -d contracts/",
     "test": "embark test"
   },
   "author": "WeTrustPlatform",
   "license": "GPL-3.0",
   "homepage": "",
-  "devDependencies": {}
+  "devDependencies": {
+    "embark-solium": "0.0.1"
+  }
 }
