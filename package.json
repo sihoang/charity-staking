@@ -1,12 +1,12 @@
 {
   "name": "charity-tcr-mvp",
   "version": "0.0.1",
-  "description": "",
+  "description": "Token Curated Registry MVP",
   "scripts": {
     "test": "embark test"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "WeTrustPlatform",
+  "license": "GPL-3.0",
   "homepage": "",
   "devDependencies": {}
 }
