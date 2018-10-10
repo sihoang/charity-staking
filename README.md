@@ -1,4 +1,4 @@
-# Charity TCR MVP
+# Charity TCR
 Work-in-progress
 
 ### Overview
