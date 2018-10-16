@@ -48,29 +48,29 @@ config({
   deployment: {
     accounts: [
       {
-        "mnemonic": "clerk next anxiety funny ability vital catalog horn town clever body meat",
-        balance: "6ether",
-      }
-    ]
+        mnemonic: 'clerk next anxiety funny ability vital catalog horn town clever body meat',
+        balance: '6ether',
+      },
+    ],
   },
 }, (err, web3Accounts) => {
   accounts = web3Accounts;
-})
+});
 
-const Staking = require('Embark/contracts/Staking');
-const TRST = require('Embark/contracts/TRST');
+const Staking = embark.require('Embark/contracts/Staking');
+const TRST = embark.require('Embark/contracts/TRST');
 
-describe("Staking", () => {
+contract('Staking', () => {
   let trstContract;
   let stakingContract;
 
   before(async () => {
-    trstContract = await TRST.deploy({arguments: [accounts[0]]}).send();
-    stakingContract = await Staking.deploy({arguments: [trstContract._address]}).send();
+    trstContract = await TRST.deploy({ arguments: [accounts[0]] }).send();
+    stakingContract = await Staking.deploy({ arguments: [trstContract.options.address] }).send();
   });
 
-  it("should accept an address in the constructor", async () => {
-    const erc20 = await stakingContract.methods.erc20Token().call();
-    assert.strictEqual(erc20, trstContract._address);
+  it('should accept an address in the constructor', async () => {
+    const erc20 = await stakingContract.methods.token().call();
+    assert.strictEqual(erc20, trstContract.options.address);
   });
 });

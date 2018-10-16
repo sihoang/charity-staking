@@ -3,13 +3,24 @@
   "version": "0.0.1",
   "description": "Token Curated Registry MVP",
   "scripts": {
-    "lint": "solium -d contracts/",
+    "lint-sol": "solium -d contracts/",
+    "lint-js": "eslint test/**/*.js",
+    "lint": "run-p lint-sol lint-js",
     "test": "embark test"
+  },
+  "engine": {
+    "node": ">=10"
   },
   "author": "WeTrustPlatform",
   "license": "GPL-3.0",
   "homepage": "",
   "devDependencies": {
-    "embark-solium": "0.0.1"
+    "embark": "^3.2.3",
+    "embark-solium": "0.0.1",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "npm-run-all": "^4.1.3",
+    "solium": "^1.1.8"
   }
 }
