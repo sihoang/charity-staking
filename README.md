@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/WeTrustPlatform/charity-tcr.svg?branch=master)](https://travis-ci.org/WeTrustPlatform/charity-tcr)
+
 # Charity TCR
 Work-in-progress
 
