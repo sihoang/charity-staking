@@ -63,7 +63,7 @@ contract TRST is ERC20TokenInterface {
   string public version = "TRST1.0";
 
   // One hundred million coins, each divided to up to 10^decimals units.
-  uint256 private constant TOTAL_TOKENS = 100000000 * (10 ** decimals);
+  uint256 private constant TOTAL_TOKENS = 100000000000000;
 
   mapping (address => uint256) public balances; // (ERC20)
   // A mapping from an account owner to a map from approved spender to their allowances.

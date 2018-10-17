@@ -14,7 +14,8 @@
     ],
     "arg-overflow": [
       "warning",
-      3
-    ]
+      4
+    ],
+    "error-reason": "off"
   }
 }
