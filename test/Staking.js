@@ -73,4 +73,13 @@ contract('Staking', () => {
     const erc20 = await stakingContract.methods.token().call();
     assert.strictEqual(erc20, trstContract.options.address);
   });
+
+  it('should return correct supportsInterface', async () => {
+    const eip165 = await stakingContract.methods.supportsInterface('0x01ffc9a7').call();
+    assert.ok(eip165);
+    const eip900 = await stakingContract.methods.supportsInterface('0x8efdf8ee').call();
+    assert.ok(eip900);
+    const invalid = await stakingContract.methods.supportsInterface('0xffffffff').call();
+    assert.ok(!invalid);
+  });
 });

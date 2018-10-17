@@ -14,7 +14,7 @@
     "ipfs-api": "17.2.4"
   },
   "plugins": {
-    "embark-solium": {"context": ["build", "run"]}
+    "embark-solium": {}
   },
   "options": {
     "solc": {

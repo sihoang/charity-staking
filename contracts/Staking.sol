@@ -15,14 +15,19 @@ contract Staking is ERC165, ISimpleStaking {
 
   /// @dev Address of the ERC20 token contract used for staking
   address internal erc20Token;
-  mapping (address => StakeInfo) internal stakers;
+
+  /// @dev https://solidity.readthedocs.io/en/v0.4.25/style-guide.html#avoiding-naming-collisions
   uint256 internal totalStaked_ = 0;
+
+  mapping (address => StakeInfo) internal stakers;
 
   constructor(address token) public {
     erc20Token = token;
   }
 
   /// @dev Implement ERC165
+  /// With three or more supported interfaces (including ERC165 itself as a required supported interface),
+  /// the mapping approach (in every case) costs less gas than the pure approach (at worst case).
   function supportsInterface(bytes4 interfaceID) external view returns (bool) {
     return
       interfaceID == this.supportsInterface.selector ||
