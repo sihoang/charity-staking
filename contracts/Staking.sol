@@ -2,15 +2,24 @@ pragma solidity ^0.4.25;
 
 import "./interfaces/ERC165.sol";
 import "./interfaces/ISimpleStaking.sol";
+import "./lib/SafeMath.sol";
 
 
 contract Staking is ERC165, ISimpleStaking {
+  using SafeMath for uint256;
+
+  struct StakeInfo {
+    uint256 amount;
+    bytes data;
+  }
 
   /// @dev Address of the ERC20 token contract used for staking
   address internal erc20Token;
+  mapping (address => StakeInfo) internal stakers;
+  uint256 internal totalStaked_ = 0;
 
-  constructor(address erc20TokenContract) public {
-    erc20Token = erc20TokenContract;
+  constructor(address token) public {
+    erc20Token = token;
   }
 
   /// @dev Implement ERC165
@@ -21,34 +30,45 @@ contract Staking is ERC165, ISimpleStaking {
   }
 
   function stake(uint256 amount, bytes data) external {
-    // TODO implementation
+    this.stakeFor(msg.sender, amount, data);
   }
 
   function stakeFor(address user, uint256 amount, bytes data) external {
-    // TODO implementation
+    // TODO transfer ERC20
+    if (stakers[user].amount > 0) {
+      stakers[user].amount = stakers[user].amount.add(amount);
+      stakers[user].data = data;
+    } else {
+      stakers[user] = StakeInfo(amount, data);
+    }
+
+    totalStaked_ = totalStaked_.add(amount);
+    emit Staked(user, amount, stakers[user].amount, data);
   }
 
   function unstake(uint256 amount, bytes data) external {
-    // TODO implementation
+    // TODO return ERC20
+    address user = msg.sender;
+    stakers[user].amount = stakers[user].amount.sub(amount);
+    stakers[user].data = data;
+
+    totalStaked_ = totalStaked_.sub(amount);
+    emit Unstaked(user, amount, stakers[user].amount, data);
   }
 
   function totalStakedFor(address addr) external view returns (uint256) {
-    // TODO implementation
-    return 0;
+    return stakers[addr].amount;
   }
 
   function totalStaked() external view returns (uint256) {
-    // TODO implementation
-    return 0;
+    return totalStaked_;
   }
 
   function token() external view returns (address) {
-    // TODO implementation
     return erc20Token;
   }
 
   function supportsHistory() external pure returns (bool) {
-    // TODO implementation
     return false;
   }
 }
