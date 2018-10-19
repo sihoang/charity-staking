@@ -5,12 +5,13 @@ import "./interfaces/ISimpleStaking.sol";
 import "./lib/SafeMath.sol";
 
 
-contract Staking is ERC165, ISimpleStaking {
+contract TimeLockedStaking is ERC165, ISimpleStaking {
   using SafeMath for uint256;
 
   struct StakeInfo {
-    uint256 amount;
-    bytes data;
+    uint256 amount; // total token staked of this user
+    uint256 effectiveAt; // member since
+    uint256 unlockedAt; // time when user can unstake
   }
 
   /// @dev Address of the ERC20 token contract used for staking
@@ -19,7 +20,7 @@ contract Staking is ERC165, ISimpleStaking {
   /// @dev https://solidity.readthedocs.io/en/v0.4.25/style-guide.html#avoiding-naming-collisions
   uint256 internal totalStaked_ = 0;
 
-  mapping (address => StakeInfo) internal stakers;
+  mapping (address => StakeInfo) public stakers;
 
   constructor(address token) public {
     erc20Token = token;
@@ -40,11 +41,11 @@ contract Staking is ERC165, ISimpleStaking {
 
   function stakeFor(address user, uint256 amount, bytes data) external {
     // TODO transfer ERC20
+    // TODO calculate effectiveAt and unlockedAt
     if (stakers[user].amount > 0) {
       stakers[user].amount = stakers[user].amount.add(amount);
-      stakers[user].data = data;
     } else {
-      stakers[user] = StakeInfo(amount, data);
+      stakers[user] = StakeInfo(amount, block.timestamp, block.timestamp);
     }
 
     totalStaked_ = totalStaked_.add(amount);
@@ -53,9 +54,9 @@ contract Staking is ERC165, ISimpleStaking {
 
   function unstake(uint256 amount, bytes data) external {
     // TODO return ERC20
+    // Reset effectiveAt
     address user = msg.sender;
     stakers[user].amount = stakers[user].amount.sub(amount);
-    stakers[user].data = data;
 
     totalStaked_ = totalStaked_.sub(amount);
     emit Unstaked(user, amount, stakers[user].amount, data);

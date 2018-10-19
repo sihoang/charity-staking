@@ -16,6 +16,7 @@
       "warning",
       4
     ],
-    "error-reason": "off"
+    "error-reason": "off",
+    "security/no-block-members": "off"
   }
 }

@@ -57,7 +57,7 @@ config({
   accounts = web3Accounts;
 });
 
-const Staking = embark.require('Embark/contracts/Staking');
+const Staking = embark.require('Embark/contracts/TimeLockedStaking');
 const TRST = embark.require('Embark/contracts/TRST');
 
 contract('Staking', () => {
