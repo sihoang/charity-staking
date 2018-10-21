@@ -50,6 +50,7 @@ config({
       {
         mnemonic: 'clerk next anxiety funny ability vital catalog horn town clever body meat',
         balance: '6ether',
+        numAddresses: 2,
       },
     ],
   },
@@ -60,12 +61,14 @@ config({
 const Staking = embark.require('Embark/contracts/TimeLockedStaking');
 const TRST = embark.require('Embark/contracts/TRST');
 
-contract('Staking', () => {
+contract('Staking Sanity', () => {
+  let trstHolder;
   let trstContract;
   let stakingContract;
 
   before(async () => {
-    trstContract = await TRST.deploy({ arguments: [accounts[0]] }).send();
+    [trstHolder] = accounts;
+    trstContract = await TRST.deploy({ arguments: [trstHolder] }).send({ from: trstHolder });
     stakingContract = await Staking.deploy({ arguments: [trstContract.options.address] }).send();
   });
 
@@ -81,5 +84,15 @@ contract('Staking', () => {
     assert.ok(eip900);
     const invalid = await stakingContract.methods.supportsInterface('0xffffffff').call();
     assert.ok(!invalid);
+  });
+
+  it('should be able to stake', async () => {
+    const amount = web3.utils.toWei('1', 'gwei'); // 1000 TRST
+    await trstContract.methods
+      .approve(stakingContract.options.address, amount)
+      .send({ from: trstHolder });
+    await stakingContract.methods.stake(amount, '0x').send({ from: trstHolder });
+    const totalStakedFor = await stakingContract.methods.totalStakedFor(trstHolder).call();
+    assert.equal(totalStakedFor, amount);
   });
 });
