@@ -60,25 +60,14 @@ contract TimeLockedStaking is ERC165, ISimpleStaking {
   /// @param amount Number of ERC20 to be staked. Amount must be > 0.
   /// @param data Used for signaling the unlocked time.
   function stake(uint256 amount, bytes data) external {
-    this.stakeFor(msg.sender, amount, data);
+    registerStake(msg.sender, amount, data);
   }
 
   /// @dev msg.sender stakes for someone else.
   /// @param amount Number of ERC20 to be staked. Must be > 0.
   /// @param data Used for signaling the unlocked time.
-  function stakeFor(address user, uint256 amount, bytes data) external greaterThanZero(amount) {
-    require(erc20Token.transferFrom(msg.sender, address(this), amount));
-
-    StakeInfo memory info = stakers[user];
-
-    uint256 effectiveAt = info.effectiveAt == 0 ? block.timestamp : info.effectiveAt;
-    uint256 unlockedAt = max(info.unlockedAt, getUnlockedAtSignal(data));
-
-    stakers[user] = StakeInfo(amount.add(stakers[user].amount), effectiveAt, unlockedAt);
-
-    totalStaked_ = totalStaked_.add(amount);
-
-    emit Staked(user, amount, stakers[user].amount, data);
+  function stakeFor(address user, uint256 amount, bytes data) external {
+    registerStake(user, amount, data);
   }
 
   /// @dev msg.sender can unstake full amount or partial if unlockedAt =< now
@@ -148,4 +137,20 @@ contract TimeLockedStaking is ERC165, ISimpleStaking {
 
     return min(unlockedAt, oneYearFromNow);
   }
+
+  function registerStake(address user, uint256 amount, bytes data) private greaterThanZero(amount) {
+    require(erc20Token.transferFrom(msg.sender, address(this), amount));
+
+    StakeInfo memory info = stakers[user];
+
+    uint256 effectiveAt = info.effectiveAt == 0 ? block.timestamp : info.effectiveAt;
+    uint256 unlockedAt = max(info.unlockedAt, getUnlockedAtSignal(data));
+
+    stakers[user] = StakeInfo(amount.add(stakers[user].amount), effectiveAt, unlockedAt);
+
+    totalStaked_ = totalStaked_.add(amount);
+
+    emit Staked(user, amount, stakers[user].amount, data);
+  }
+
 }
