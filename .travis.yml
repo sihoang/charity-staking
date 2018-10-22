@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - "10"
+# temporary fix for https://github.com/ethereum/web3.js/issues/1914
+before_install:
+  - npm install --save-exact web3@1.0.0-beta.34
 script:
   - npm run lint
   - npm run test
