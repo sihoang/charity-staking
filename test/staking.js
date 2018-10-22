@@ -44,95 +44,84 @@ contract("SimpleStorage", function () {
 
 const { getTrstBalance, getTotalStakedFor, getTotalStaked } = require('./utils');
 
-let accounts;
-config({
-  deployment: {
-    accounts: [
-      {
-        mnemonic: 'clerk next anxiety funny ability vital catalog horn town clever body meat',
-        balance: '6ether',
-        numAddresses: 2,
-      },
-    ],
-  },
-}, (err, web3Accounts) => {
-  accounts = web3Accounts;
-});
-
-const Staking = embark.require('Embark/contracts/TimeLockedStaking');
+const StakingContract = embark.require('Embark/contracts/TimeLockedStaking');
 const TRST = embark.require('Embark/contracts/TRST');
 
+let trstHolder;
+config({
+  contracts: {
+    TRST: {
+      args: ['$accounts[0]'],
+    },
+    TimeLockedStaking: {
+      args: ['$TRST'],
+    },
+  },
+}, (err, web3Accounts) => {
+  [trstHolder] = web3Accounts;
+});
+
 contract('Staking Sanity', () => {
-  let trstHolder;
-  let trstContract;
-  let stakingContract;
-
-  before(async () => {
-    [trstHolder] = accounts;
-    trstContract = await TRST.deploy({ arguments: [trstHolder] }).send({ from: trstHolder });
-    stakingContract = await Staking.deploy({ arguments: [trstContract.options.address] }).send();
-  });
-
   it('should accept an address in the constructor', async () => {
-    const erc20 = await stakingContract.methods.token().call();
-    assert.strictEqual(erc20, trstContract.options.address);
+    const erc20 = await StakingContract.methods.token().call();
+    assert.strictEqual(erc20, TRST.options.address);
   });
 
   it('should return correct supportsInterface', async () => {
-    const eip165 = await stakingContract.methods.supportsInterface('0x01ffc9a7').call();
+    const eip165 = await StakingContract.methods.supportsInterface('0x01ffc9a7').call();
     assert.ok(eip165);
-    const eip900 = await stakingContract.methods.supportsInterface('0x8efdf8ee').call();
+    const eip900 = await StakingContract.methods.supportsInterface('0x8efdf8ee').call();
     assert.ok(eip900);
-    const invalid = await stakingContract.methods.supportsInterface('0xffffffff').call();
+    const invalid = await StakingContract.methods.supportsInterface('0xffffffff').call();
     assert.ok(!invalid);
   });
 
   it('should be able to stake and unstake and balance is transfered correctly', async () => {
     const amount = new web3.utils.BN(web3.utils.toWei('1', 'gwei')); // 1000 TRST
     const zero = new web3.utils.BN(0);
-    const stakingContractAddress = stakingContract.options.address;
+    const stakingContractAddress = StakingContract.options.address;
     const options = {
       from: trstHolder,
     };
-    const trstOriginalBalance = await getTrstBalance(trstContract, trstHolder);
+    const trstOriginalBalance = await getTrstBalance(TRST, trstHolder);
 
     // approve TRST transfer before staking
-    await trstContract.methods
-      .approve(stakingContract.options.address, amount)
+    await TRST.methods
+      .approve(StakingContract.options.address, amount)
       .send({ from: trstHolder });
 
-    // make sure stakingContract has 0 balance
-    assert.deepEqual(await getTotalStaked(stakingContract), zero);
-    assert.deepEqual(await getTrstBalance(trstContract, stakingContractAddress), zero);
+    // make sure StakingContract has 0 balance
+    assert.deepEqual(await getTotalStaked(StakingContract), zero);
+    assert.deepEqual(await getTrstBalance(TRST, stakingContractAddress), zero);
 
-    await stakingContract.methods.stake(amount, '0x').send(options);
+    await StakingContract.methods.stake(amount, '0x').send(options);
 
-    // verify balance in trstContract. trstHolder transfers to stakingContract.
+    // verify balance in TRST. trstHolder transfers to StakingContract.
     assert.deepEqual(
       trstOriginalBalance.sub(amount),
-      await getTrstBalance(trstContract, trstHolder),
+      await getTrstBalance(TRST, trstHolder),
     );
-    assert.deepEqual(await getTrstBalance(trstContract, stakingContractAddress), amount);
+    assert.deepEqual(await getTrstBalance(TRST, stakingContractAddress), amount);
 
-    // verify balance in stakingContract
-    let totalStakedFor = await getTotalStakedFor(stakingContract, trstHolder);
+    // verify balance in StakingContract
+    let totalStakedFor = await getTotalStakedFor(StakingContract, trstHolder);
     assert.deepEqual(totalStakedFor, amount);
-    assert.deepEqual(await getTotalStaked(stakingContract), amount);
+    assert.deepEqual(await getTotalStaked(StakingContract), amount);
 
-    await stakingContract.methods.unstake(amount, '0x').send(options);
+    await StakingContract.methods.unstake(amount, '0x').send(options);
 
-    // verify balance is updated in stakingContract
-    totalStakedFor = await getTotalStakedFor(stakingContract, trstHolder);
+    // verify balance is updated in StakingContract
+    totalStakedFor = await getTotalStakedFor(StakingContract, trstHolder);
     assert.deepEqual(totalStakedFor, web3.utils.toBN(0));
-    assert.deepEqual(await getTotalStaked(stakingContract), zero);
+    assert.deepEqual(await getTotalStaked(StakingContract), zero);
 
-    // verify balance is updated in trstContract. stakingContract transfers to trstHolder.
-    assert.deepEqual(await getTrstBalance(trstContract, trstHolder), trstOriginalBalance);
-    assert.deepEqual(await getTrstBalance(trstContract, stakingContractAddress), zero);
+    // verify balance is updated in TRST. StakingContract transfers to trstHolder.
+    assert.deepEqual(await getTrstBalance(TRST, trstHolder), trstOriginalBalance);
+    assert.deepEqual(await getTrstBalance(TRST, stakingContractAddress), zero);
   });
 
   it('should return supportsHistory false', async () => {
-    const isSupportsHistory = await stakingContract.methods.supportsHistory().call();
+    const isSupportsHistory = await StakingContract.methods.supportsHistory().call();
     assert.equal(isSupportsHistory, false);
   });
 });

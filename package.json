@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Token Curated Registry MVP",
   "scripts": {
+    "dev": "embark run",
     "lint-sol": "solium -d contracts/",
     "lint-js": "eslint test/**/*.js",
     "lint": "run-p lint-sol lint-js",

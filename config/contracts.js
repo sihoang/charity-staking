@@ -3,11 +3,11 @@ module.exports = {
   default: {
     // Blockchain node to deploy the contracts
     deployment: {
-      host: "localhost", // Host of the blockchain node
+      host: 'localhost', // Host of the blockchain node
       port: 8545, // Port of the blockchain node
-      type: "rpc" // Type of connection (ws or rpc),
+      type: 'rpc', // Type of connection (ws or rpc),
       // Accounts to use instead of the default account to populate your wallet
-      /*,accounts: [
+      /* ,accounts: [
         {
           privateKey: "your_private_key",
           balance: "5 ether"  // You can set the balance of the account in the dev environment
@@ -23,31 +23,40 @@ module.exports = {
           numAddresses: "1", // Optionnal. The number of addresses to get
           hdpath: "m/44'/60'/0'/0/" // Optionnal. HD derivation path
         }
-      ]*/
+      ] */
     },
     // order of connections the dapp should connect to
     dappConnection: [
-      "$WEB3",  // uses pre existing web3 object if available (e.g in Mist)
-      "ws://localhost:8546",
-      "http://localhost:8545"
+      '$WEB3', // uses pre existing web3 object if available (e.g in Mist)
+      'ws://localhost:8546',
+      'http://localhost:8545',
     ],
-    gas: "auto",
+    gas: 'auto',
+    accounts: [
+      {
+        mnemonic: 'clerk next anxiety funny ability vital catalog horn town clever body meat',
+        balance: '6 ether',
+        numAddresses: 4,
+      },
+    ],
     contracts: {
-      // example:
-      //SimpleStorage: {
-      //  args: [ 100 ]
-      //}
-    }
+      TRST: {
+        args: ['$accounts[0]'],
+      },
+      TimeLockedStaking: {
+        args: ['$TRST'],
+      },
+    },
   },
 
   // default environment, merges with the settings in default
   // assumed to be the intended environment by `embark run`
   development: {
     dappConnection: [
-      "ws://localhost:8546",
-      "http://localhost:8545",
-      "$WEB3"  // uses pre existing web3 object if available (e.g in Mist)
-    ]
+      'ws://localhost:8546',
+      'http://localhost:8545',
+      '$WEB3', // uses pre existing web3 object if available (e.g in Mist)
+    ],
   },
 
   // merges with the settings in default
@@ -67,6 +76,6 @@ module.exports = {
 
   // you can name an environment with specific settings and then specify with
   // "embark run custom_name" or "embark blockchain custom_name"
-  //custom_name: {
-  //}
+  // custom_name: {
+  // }
 };
