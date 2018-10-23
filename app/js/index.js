@@ -1,5 +1,13 @@
-// import EmbarkJS from 'Embark/EmbarkJS';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
 
-// import your contracts
-// e.g if you have a contract named SimpleStorage:
-// import SimpleStorage from 'Embark/contracts/SimpleStorage';
+function App() {
+  return (
+    <Button variant="contained" color="primary">
+      Hello World
+    </Button>
+  );
+}
+
+ReactDOM.render(<App />, document.querySelector('#app'));
