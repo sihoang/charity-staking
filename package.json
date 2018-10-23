@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "embark run",
     "lint-sol": "solium -d contracts/",
-    "lint-js": "eslint test/**/*.js",
+    "lint-js": "eslint '**/*.js'",
     "lint": "run-p lint-sol lint-js",
     "test": "embark test"
   },

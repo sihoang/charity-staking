@@ -2,18 +2,18 @@ module.exports = {
   // default applies to all environments
   default: {
     enabled: true,
-    provider: "whisper", // Communication provider. Currently, Embark only supports whisper
-    available_providers: ["whisper"], // Array of available providers
+    provider: 'whisper', // Communication provider. Currently, Embark only supports whisper
+    available_providers: ['whisper'], // Array of available providers
   },
 
   // default environment, merges with the settings in default
   // assumed to be the intended environment by `embark run`
   development: {
     connection: {
-      host: "localhost", // Host of the blockchain node
+      host: 'localhost', // Host of the blockchain node
       port: 8546, // Port of the blockchain node
-      type: "ws" // Type of connection (ws or rpc)
-    }
+      type: 'ws', // Type of connection (ws or rpc)
+    },
   },
 
   // merges with the settings in default
@@ -34,7 +34,6 @@ module.exports = {
 
   // you can name an environment with specific settings and then specify with
   // "embark run custom_name"
-  //custom_name: {
-  //}
+  // custom_name: {
+  // }
 };
-
