@@ -24,5 +24,7 @@ module.exports = {
     "no-await-in-loop": "off",
     "import/no-dynamic-require": "off",
     "global-require": "off",
+    "class-methods-use-this": "off",
+    "react/prop-types": "off",
   }
 };

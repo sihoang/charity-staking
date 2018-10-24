@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Button from '@material-ui/core/Button';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
+import HomePage from './HomePage';
 
 function App() {
   return (
-    <Button variant="contained" color="primary">
-      Hello World
-    </Button>
+    <MuiThemeProvider theme={theme}>
+      <HomePage/>
+    </MuiThemeProvider>
   );
 }
 
