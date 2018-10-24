@@ -1,5 +1,5 @@
 module.exports = {
-  "extends": ["airbnb-base", "plugin:react/recommended"],
+  "extends": ["airbnb"],
   "env": {
     "browser": true,
     "node": true,
@@ -26,5 +26,7 @@ module.exports = {
     "global-require": "off",
     "class-methods-use-this": "off",
     "react/prop-types": "off",
+    "react/jsx-filename-extension": "off",
+    "react/prefer-stateless-function": "off",
   }
 };

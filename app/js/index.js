@@ -7,7 +7,7 @@ import HomePage from './HomePage';
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <HomePage/>
+      <HomePage />
     </MuiThemeProvider>
   );
 }
