@@ -4,11 +4,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 
 const styles = {
   grow: {
     flexGrow: 1,
+  },
+  brandImage: {
+    height: '1.5rem',
   },
 };
 
@@ -19,9 +21,9 @@ class HomePage extends React.Component {
       <div>
         <AppBar>
           <Toolbar>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              WeStake
-            </Typography>
+            <div className={classes.grow}>
+              <img src="images/logo-trimmed.png" alt="WeTrust" className={classes.brandImage} />
+            </div>
             <Tabs
               indicatorColor="primary"
               fullWidth
