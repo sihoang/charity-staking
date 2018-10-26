@@ -7,10 +7,10 @@ const styles = theme => ({
     paddingTop: theme.mixins.toolbar.minHeight * 2,
     paddingBottom: theme.mixins.toolbar.minHeight * 2,
   },
-  primary: {
+  dark: {
     backgroundColor: theme.palette.primary.main,
   },
-  default: {
+  light: {
     backgroundColor: theme.palette.primary.light,
   },
 });
@@ -18,9 +18,9 @@ const styles = theme => ({
 class Section extends React.Component {
   render() {
     const {
-      classes, children, primary, className,
+      classes, children, dark, className,
     } = this.props;
-    const customClass = primary ? classes.primary : classes.default;
+    const customClass = dark ? classes.dark : classes.light;
     return (
       <div className={classnames(classes.root, customClass, className)}>
         {children}

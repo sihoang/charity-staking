@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import MainSection from './MainSection';
-import FAQ from './FAQ';
+import FAQSection from './FAQSection';
 import Footer from './Footer';
 
 class HomePage extends React.Component {
@@ -10,7 +10,7 @@ class HomePage extends React.Component {
       <div>
         <Navbar />
         <MainSection />
-        <FAQ />
+        <FAQSection />
         <Footer />
       </div>
     );
