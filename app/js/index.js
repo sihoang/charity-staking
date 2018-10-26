@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import HomePage from './HomePage';
+import '../css/main.css';
 
 function App() {
   return (
