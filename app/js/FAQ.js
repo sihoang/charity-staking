@@ -1,6 +1,8 @@
 import React from 'react';
+import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Section from './Section';
+import SectionHeader from './SectionHeader';
 
 const styles = {
   root: {
@@ -10,11 +12,11 @@ const styles = {
 
 class FAQ extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, className } = this.props;
     return (
-      <div className={classes.root}>
-        <Typography variant="h1" align="center">FAQ</Typography>
-      </div>
+      <Section primary className={classnames(classes.root, className)}>
+        <SectionHeader>FAQ</SectionHeader>
+      </Section>
     );
   }
 }
