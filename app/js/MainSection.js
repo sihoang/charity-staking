@@ -7,7 +7,7 @@ import Section from './Section';
 
 const styles = {
   container: {
-    minHeight: '100vh',
+    minHeight: '80vh',
   },
 };
 

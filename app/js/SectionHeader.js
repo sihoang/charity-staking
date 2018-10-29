@@ -1,13 +1,20 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  container: {
+    marginBottom: theme.mixins.toolbar.minHeight,
+  },
+});
 
 class SectionHeader extends React.Component {
   render() {
-    const { children } = this.props;
+    const { children, classes } = this.props;
     return (
-      <Typography color="secondary" variant="h2" align="center">{children}</Typography>
+      <Typography className={classes.container} color="secondary" variant="h2" align="center">{children}</Typography>
     );
   }
 }
 
-export default SectionHeader;
+export default withStyles(styles)(SectionHeader);

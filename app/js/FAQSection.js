@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Section from './Section';
 import SectionHeader from './SectionHeader';
@@ -7,16 +6,13 @@ import FAQItem from './FAQItem';
 import faq from './faq.json';
 
 const styles = theme => ({
-  root: {
-  },
   container: {
-    paddingTop: theme.mixins.toolbar.minHeight,
     margin: 'auto',
     maxWidth: theme.breakpoints.values.md,
   },
 });
 
-class FAQ extends React.Component {
+class FAQSection extends React.Component {
   renderFAQItems() {
     return faq.map(item => (
       <FAQItem
@@ -28,9 +24,9 @@ class FAQ extends React.Component {
   }
 
   render() {
-    const { classes, className, color } = this.props;
+    const { classes, color } = this.props;
     return (
-      <Section color={color} className={classnames(classes.root, className)}>
+      <Section color={color}>
         <SectionHeader>FAQ</SectionHeader>
         <div className={classes.container}>
           {this.renderFAQItems()}
@@ -40,4 +36,4 @@ class FAQ extends React.Component {
   }
 }
 
-export default withStyles(styles)(FAQ);
+export default withStyles(styles)(FAQSection);
