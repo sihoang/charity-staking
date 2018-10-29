@@ -9,8 +9,8 @@ class HomePage extends React.Component {
     return (
       <div>
         <Navbar />
-        <MainSection />
-        <FAQSection />
+        <MainSection color="light" />
+        <FAQSection color="dark" />
         <Footer />
       </div>
     );

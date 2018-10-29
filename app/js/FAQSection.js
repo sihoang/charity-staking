@@ -28,9 +28,9 @@ class FAQ extends React.Component {
   }
 
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, color } = this.props;
     return (
-      <Section dark className={classnames(classes.root, className)}>
+      <Section color={color} className={classnames(classes.root, className)}>
         <SectionHeader>FAQ</SectionHeader>
         <div className={classes.container}>
           {this.renderFAQItems()}

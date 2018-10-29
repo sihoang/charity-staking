@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Dashboard from './Dashboard';
+import Section from './Section';
 
 const styles = {
   container: {
@@ -12,15 +13,17 @@ const styles = {
 
 class MainSection extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, color } = this.props;
     return (
-      <div>
+      <Section
+        color={color}
+        className={classes.container}
+      >
         <Grid
           container
           direction="row"
           justify="center"
           alignItems="center"
-          className={classes.container}
         >
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Typography align="center" variant="h1">Stake your TRST</Typography>
@@ -29,7 +32,7 @@ class MainSection extends React.Component {
             <Dashboard />
           </Grid>
         </Grid>
-      </div>
+      </Section>
     );
   }
 }

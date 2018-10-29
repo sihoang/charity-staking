@@ -18,11 +18,11 @@ const styles = theme => ({
 class Section extends React.Component {
   render() {
     const {
-      classes, children, dark, className,
+      classes, children, color, className,
     } = this.props;
-    const customClass = dark ? classes.dark : classes.light;
+    const backgroundColor = color ? classes[color] : classes.light;
     return (
-      <div className={classnames(classes.root, customClass, className)}>
+      <div className={classnames(classes.root, backgroundColor, className)}>
         {children}
       </div>
     );
