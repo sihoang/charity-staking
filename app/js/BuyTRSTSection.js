@@ -31,7 +31,7 @@ class BuyTRSTSection extends React.Component {
 
     this.timeOut = window.setTimeout(() => this.setState({
       isMsgShown: false,
-    }), 4000);
+    }), 3000);
   }
 
   render() {
@@ -53,7 +53,7 @@ class BuyTRSTSection extends React.Component {
             )}
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={this.handleBuyClick}
           >
             Buy TRST with your Credit Card
