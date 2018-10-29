@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import MainSection from './MainSection';
 import FAQSection from './FAQSection';
 import Footer from './Footer';
+import BuyTRSTSection from './BuyTRSTSection';
 
 class HomePage extends React.Component {
   render() {
@@ -10,7 +11,8 @@ class HomePage extends React.Component {
       <div>
         <Navbar />
         <MainSection color="light" />
-        <FAQSection color="dark" />
+        <BuyTRSTSection color="dark" />
+        <FAQSection color="light" />
         <Footer />
       </div>
     );
