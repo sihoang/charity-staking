@@ -3,21 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
 import Downshift from 'downshift';
 import debounce from 'lodash.debounce';
 import axios from 'axios';
 
 
 const styles = theme => ({
-  root: {
-    borderStyle: 'solid',
-  },
-  searchIcon: {
-    width: theme.spacing.unit * 9,
-    height: '100%',
-    pointerEvents: 'none',
-    textAlign: 'right',
-  },
   inputRoot: {
     color: 'inherit',
     width: '100%',
@@ -48,6 +41,15 @@ class SearchInput extends React.Component {
     }, 500);
   }
 
+  getSuggestions(charities, inputValue) {
+    return charities.filter(
+      item => (
+        !inputValue
+        || item.name.toLowerCase().includes(inputValue.toLowerCase())
+      ),
+    );
+  }
+
   queryDataByName(name) {
     axios.get(
       `http://localhost:8001/charities?name=${name}`,
@@ -57,11 +59,34 @@ class SearchInput extends React.Component {
     });
   }
 
+  renderSuggestion({
+    item, index, itemProps, highlightedIndex, selectedItem,
+  }) {
+    const isHighlighted = highlightedIndex === index;
+    const isSelected = selectedItem === item;
+
+    return (
+      <MenuItem
+        {...itemProps}
+        key={item.name}
+        selected={isHighlighted}
+        component="div"
+        style={{
+          fontWeight: isSelected ? 'bold' : 'normal',
+        }}
+      >
+        {item.name}
+      </MenuItem>
+    );
+  }
+
   render() {
     const { classes } = this.props;
     const { charities } = this.state;
     return (
       <Downshift
+        // TODO: onSelected should cancel onStateChange so that
+        // it does not do additional query for the selected item
         onChange={selection => console.log(`You have selected ${selection.name}`)}
         itemToString={item => (item ? item.name : '')}
         onStateChange={this.onStateChange()}
@@ -80,11 +105,9 @@ class SearchInput extends React.Component {
                 root: classes.root,
               }}
               >
-                <div className={classes.searchIcon}>
-                  <Icon>search</Icon>
-                </div>
+                <Icon>search</Icon>
                 <InputBase
-                  placeholder="Search your favorite NPO..."
+                  placeholder="Search..."
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputText,
@@ -93,31 +116,21 @@ class SearchInput extends React.Component {
                 />
               </Toolbar>
               {isOpen ? (
-                <div>
-                  {charities
-                    .filter(
-                      item => (
-                        !inputValue
-                        || item.name.toLowerCase().includes(inputValue.toLowerCase())
-                      ),
-                    )
-                    .map((item, index) => (
-                      <div
-                        {...getItemProps({
-                          key: item.name,
-                          index,
+                <Paper square className={classes.paper}>
+                  {
+                    this.getSuggestions(charities, inputValue)
+                      .map((item, index) => this.renderSuggestion({
+                        item,
+                        index,
+                        itemProps: getItemProps({
                           item,
-                          style: {
-                            backgroundColor:
-                        highlightedIndex === index ? 'lightgray' : 'white',
-                            fontWeight: selectedItem === item ? 'bold' : 'normal',
-                          },
-                        })}
-                      >
-                        {item.name}
-                      </div>
-                    ))}
-                </div>
+                          index,
+                        }),
+                        highlightedIndex,
+                        selectedItem,
+                      }))
+                  }
+                </Paper>
               ) : null}
             </div>
           )
