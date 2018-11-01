@@ -31,7 +31,7 @@ class BuyTRSTSection extends React.Component {
 
     this.timeOut = window.setTimeout(() => this.setState({
       isMsgShown: false,
-    }), 3000);
+    }), 1000);
   }
 
   render() {
