@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 class StakeAmountInput extends React.Component {
   constructor(props) {
@@ -25,10 +26,12 @@ class StakeAmountInput extends React.Component {
           label="Enter the amount"
           onChange={this.handleChange}
           value={amount}
-          type="number"
           variant="outlined"
           InputLabelProps={{
             shrink: true,
+          }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">TRST</InputAdornment>,
           }}
         />
       </div>

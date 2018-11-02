@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const durations = [
   {
@@ -45,6 +46,9 @@ class StakeDurationInput extends React.Component {
           variant="outlined"
           InputLabelProps={{
             shrink: true,
+          }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">Duration</InputAdornment>,
           }}
         >
           {
