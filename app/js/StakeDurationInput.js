@@ -43,7 +43,6 @@ class StakeDurationInput extends React.Component {
           value={duration}
           onChange={this.handleChange}
           label="Select a lock-up duration"
-          variant="outlined"
           InputLabelProps={{
             shrink: true,
           }}

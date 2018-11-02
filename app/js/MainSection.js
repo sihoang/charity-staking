@@ -4,9 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Dashboard from './Dashboard';
 import Section from './Section';
-import SearchInput from './SearchInput';
-import StakeAmountInput from './StakeAmountInput';
-import StakeDurationInput from './StakeDurationInput';
+import StakeNow from './StakeNow';
 
 const styles = {
   container: {
@@ -30,9 +28,7 @@ class MainSection extends React.Component {
         >
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Typography align="center" variant="h1">Stake your TRST</Typography>
-            <StakeAmountInput />
-            <StakeDurationInput />
-            <SearchInput />
+            <StakeNow />
           </Grid>
           <Grid item xs={12} sm={8} md={6} lg={4}>
             <Dashboard />

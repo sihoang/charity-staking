@@ -26,7 +26,6 @@ class StakeAmountInput extends React.Component {
           label="Enter the amount"
           onChange={this.handleChange}
           value={amount}
-          variant="outlined"
           InputLabelProps={{
             shrink: true,
           }}

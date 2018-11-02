@@ -12,6 +12,7 @@ import axios from 'axios';
 
 const styles = theme => ({
   root: {
+    padding: theme.spacing.unit * 2,
   },
   results: {
     marginTop: theme.spacing.unit,
@@ -101,11 +102,9 @@ class SearchInput extends React.Component {
                 fullWidth
                 label="Enter your favorite non-profit's name"
                 type="search"
-                variant="outlined"
                 InputLabelProps={{
                   shrink: true,
                 }}
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
