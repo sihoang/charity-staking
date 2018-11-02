@@ -17,6 +17,7 @@ class MainSection extends React.Component {
     const { classes, color } = this.props;
     return (
       <Section
+        id="main-section"
         color={color}
         className={classes.container}
       >

@@ -1,9 +1,9 @@
 import React from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 
 const styles = {
   grow: {
@@ -15,6 +15,19 @@ const styles = {
 };
 
 class Navbar extends React.Component {
+  renderLink(to, text) {
+    return (
+      <Link
+        smooth
+        to={to}
+      >
+        <Button>
+          {text}
+        </Button>
+      </Link>
+    );
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -24,14 +37,8 @@ class Navbar extends React.Component {
             <div className={classes.grow}>
               <img src="images/logo-trimmed.png" alt="WeTrust" className={classes.brandImage} />
             </div>
-            <Tabs
-              indicatorColor="primary"
-              fullWidth
-            >
-              <Tab label="Home" />
-              <Tab label="Unstake" />
-              <Tab label="FAQ" />
-            </Tabs>
+            {this.renderLink('#main-section', 'Home')}
+            {this.renderLink('#faq-section', 'FAQ')}
           </Toolbar>
         </AppBar>
 
