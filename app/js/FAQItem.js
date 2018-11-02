@@ -49,7 +49,7 @@ class FAQItem extends React.Component {
         <div className={classes.question} onClick={this.toggleAnswer} role="presentation">
           <Grid container>
             <Grid item xs={10}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {question}
               </Typography>
             </Grid>
@@ -62,7 +62,7 @@ class FAQItem extends React.Component {
         { isAnswerShown
         && (
         <div className={classes.answer}>
-          <Typography variant="h6">
+          <Typography variant="subtitle1">
             {answer}
           </Typography>
         </div>

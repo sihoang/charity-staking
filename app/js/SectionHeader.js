@@ -12,7 +12,7 @@ class SectionHeader extends React.Component {
   render() {
     const { children, classes } = this.props;
     return (
-      <Typography className={classes.container} color="secondary" variant="h2" align="center">{children}</Typography>
+      <Typography className={classes.container} color="secondary" variant="h3" align="center">{children}</Typography>
     );
   }
 }

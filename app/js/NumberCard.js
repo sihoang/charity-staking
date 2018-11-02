@@ -16,12 +16,12 @@ class NumberCard extends React.Component {
       title, mainNumber, mainUnit, subText, classes,
     } = this.props;
     return (
-      <Card raised className={classes.root}>
+      <Card className={classes.root}>
         <CardContent>
-          <Typography gutterBottom color="secondary" variant="h5">
+          <Typography gutterBottom color="secondary" variant="h6">
             {title}
           </Typography>
-          <Typography gutterBottom variant="h4">
+          <Typography gutterBottom variant="h5">
             {mainNumber}
             {' '}
             {mainUnit}
@@ -29,7 +29,7 @@ class NumberCard extends React.Component {
           {
           subText
           && (
-          <Typography color="textSecondary" variant="h6">
+          <Typography color="textSecondary" variant="subtitle1">
             {subText}
           </Typography>
           )

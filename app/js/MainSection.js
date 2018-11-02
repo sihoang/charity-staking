@@ -28,7 +28,7 @@ class MainSection extends React.Component {
           alignItems="center"
         >
           <Grid item xs={12} sm={12} md={12} lg={8}>
-            <Typography align="center" variant="h1">Stake your TRST</Typography>
+            <Typography align="center" variant="h2">Stake your TRST</Typography>
             <StakeNow />
           </Grid>
           <Grid item xs={12} sm={8} md={6} lg={4}>
