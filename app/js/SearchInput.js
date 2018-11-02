@@ -1,8 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Downshift from 'downshift';
@@ -11,14 +9,10 @@ import axios from 'axios';
 
 
 const styles = theme => ({
-  inputRoot: {
-    color: 'inherit',
-    width: '100%',
+  root: {
   },
-  inputText: {
-    padding: theme.spacing.unit,
-    transition: theme.transitions.create('width'),
-    width: '100%',
+  results: {
+    marginTop: theme.spacing.unit,
   },
 });
 
@@ -100,23 +94,19 @@ class SearchInput extends React.Component {
             highlightedIndex,
             selectedItem,
           }) => (
-            <div>
-              <Toolbar classes={{
-                root: classes.root,
-              }}
-              >
-                <Icon>search</Icon>
-                <InputBase
-                  placeholder="Search..."
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputText,
-                  }}
-                  {...getInputProps()}
-                />
-              </Toolbar>
+            <div className={classes.root}>
+              <TextField
+                fullWidth
+                label="Enter your favorite non-profit's name"
+                type="search"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...getInputProps()}
+              />
               {isOpen ? (
-                <Paper square className={classes.paper}>
+                <Paper square className={classes.results}>
                   {
                     this.getSuggestions(charities, inputValue)
                       .map((item, index) => this.renderSuggestion({
