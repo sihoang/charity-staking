@@ -1,10 +1,12 @@
 import React from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
+
 
 const styles = theme => ({
   root: {
@@ -36,7 +38,7 @@ class StakeNow extends React.Component {
   }
 
   renderButton(props, text) {
-    const { classes, color } = props;
+    const { classes, color, component } = props;
     return (
       <Grid
         item
@@ -47,6 +49,7 @@ class StakeNow extends React.Component {
         <Button
           fullWidth
           color={color}
+          component={component}
           variant="contained"
         >
           {text}
@@ -82,10 +85,11 @@ class StakeNow extends React.Component {
           {this.renderButton({
             ...this.props,
             color: 'primary',
-          }, 'Stake!')}
+          }, 'Stake Now!')}
 
           {this.renderButton({
             ...this.props,
+            component: props => <Link smooth to="#faq-section"><Button {...props} /></Link>,
           }, 'Learn more')}
         </Grid>
       </div>
