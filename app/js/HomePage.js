@@ -13,7 +13,7 @@ class HomePage extends React.Component {
         <MainSection color="light" />
         <BuyTRSTSection color="dark" />
         <FAQSection color="light" />
-        <Footer />
+        <Footer color="dark" />
       </div>
     );
   }
