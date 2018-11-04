@@ -8,6 +8,14 @@ const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 4,
   },
+  primaryText: {
+    display: 'table',
+  },
+  span: {
+    display: 'table-cell',
+    verticalAlign: 'middle',
+    paddingRight: theme.spacing.unit / 2,
+  },
 });
 
 class NumberCard extends React.Component {
@@ -21,10 +29,13 @@ class NumberCard extends React.Component {
           <Typography gutterBottom color="secondary" variant="h6">
             {title}
           </Typography>
-          <Typography gutterBottom variant="h5">
-            {mainNumber}
-            {' '}
-            {mainUnit}
+          <Typography variant="h5" className={classes.primaryText}>
+            <span className={classes.span}>
+              {mainNumber}
+            </span>
+            <span className={classes.span}>
+              {mainUnit}
+            </span>
           </Typography>
           {
           subText

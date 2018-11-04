@@ -4,8 +4,6 @@ import trst from '../images/trst.png';
 
 const styles = theme => ({
   icon: {
-    height: 'auto',
-    width: 'auto',
     maxWidth: theme.typography.h5.fontSize,
   },
 });
