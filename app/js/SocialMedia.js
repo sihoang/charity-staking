@@ -50,7 +50,6 @@ class SocialMedia extends React.Component {
         direction="row"
         justify="center"
         alignItems="center"
-        spacing={8}
       >
         {this.renderSocialItem('facebook-square', 'https://www.facebook.com/wetrustplatform')}
         {this.renderSocialItem('twitter-square', 'https://twitter.com/wetrustplatform')}
