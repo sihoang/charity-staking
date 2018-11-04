@@ -6,10 +6,9 @@ import Icon from '@material-ui/core/Icon';
 
 const styles = theme => ({
   item: {
-    display: 'flex',
-    flexFlow: 'row wrap',
-    alignItems: 'strech',
     background: theme.palette.primary.main,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   href: {
     color: theme.palette.secondary.main,
@@ -47,15 +46,14 @@ class SocialMedia extends React.Component {
     return (
       <Grid
         container
-        direction="row"
         justify="center"
         alignItems="center"
       >
-        {this.renderSocialItem('facebook-square', 'https://www.facebook.com/wetrustplatform')}
-        {this.renderSocialItem('twitter-square', 'https://twitter.com/wetrustplatform')}
+        {this.renderSocialItem('facebook', 'https://www.facebook.com/wetrustplatform')}
+        {this.renderSocialItem('reddit', 'https://www.reddit.com/r/WeTrustPlatform')}
+        {this.renderSocialItem('twitter', 'https://twitter.com/wetrustplatform')}
+        {this.renderSocialItem('github', 'https://github.com/wetrustplatform')}
         {this.renderSocialItem('medium', 'https://medium.com/wetrust-blog')}
-        {this.renderSocialItem('reddit-square', 'https://www.reddit.com/r/WeTrustPlatform')}
-        {this.renderSocialItem('github-square', 'https://github.com/wetrustplatform')}
       </Grid>
     );
   }
