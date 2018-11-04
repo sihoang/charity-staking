@@ -16,6 +16,8 @@ const styles = theme => ({
   },
   results: {
     marginTop: theme.spacing.unit,
+    position: 'absolute',
+    zIndex: 1,
   },
 });
 
@@ -78,13 +80,13 @@ class SearchInput extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, onSelected } = this.props;
     const { charities } = this.state;
     return (
       <Downshift
         // TODO: onSelected should cancel onStateChange so that
         // it does not do additional query for the selected item
-        onChange={selection => console.log(`You have selected ${selection.name}`)}
+        onChange={onSelected}
         itemToString={item => (item ? item.name : '')}
         onStateChange={this.onStateChange()}
       >

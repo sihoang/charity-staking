@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
+import NPOInfo from './NPOInfo';
 
 
 const styles = theme => ({
@@ -23,6 +24,20 @@ const styles = theme => ({
 });
 
 class StakeNow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selection: {},
+    };
+    this.onSelected = this.onSelected.bind(this);
+  }
+
+  onSelected(selection) {
+    this.setState({
+      selection,
+    });
+  }
+
   renderGridItem(props, child) {
     const { classes } = props;
     return (
@@ -60,6 +75,7 @@ class StakeNow extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { selection } = this.state;
     return (
       <div className={classes.root}>
         <Grid
@@ -73,7 +89,10 @@ class StakeNow extends React.Component {
           {this.renderGridItem(this.props, <StakeDurationInput />)}
         </Grid>
 
-        <SearchInput />
+        <SearchInput onSelected={this.onSelected} />
+        { selection.name
+            && <NPOInfo data={selection} />
+        }
 
         <Grid
           container
