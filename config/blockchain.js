@@ -1,7 +1,7 @@
 module.exports = {
   // applies to all environments
   default: {
-    enabled: false,
+    enabled: true,
     rpcHost: 'localhost', // HTTP-RPC server listening interface (default: "localhost")
     rpcPort: 8545, // HTTP-RPC server listening port (default: 8545)
     rpcCorsDomain: 'auto', // Comma separated list of domains from which to accept cross origin requests (browser enforced)
@@ -92,7 +92,8 @@ module.exports = {
   // merges with the settings in default
   // used with "embark run testnet" and/or "embark blockchain testnet"
   testnet: {
-    networkType: 'testnet',
+    networkType: 'rinkeby',
+    networkId: '4',
     syncMode: 'light',
     account: {
       password: 'config/testnet/password',

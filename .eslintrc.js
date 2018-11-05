@@ -10,6 +10,7 @@ module.exports = {
     },
   },
   "globals": {
+    "EmbarkJS": true,
     "embark": true,
     "config": true,
     "contract": true,
@@ -23,6 +24,7 @@ module.exports = {
     "no-restricted-syntax": "off",
     "no-await-in-loop": "off",
     "import/no-dynamic-require": "off",
+    "import/no-unresolved": ["error", { "ignore": ["Embark/EmbarkJS"] }],
     "global-require": "off",
     "class-methods-use-this": "off",
     "react/prop-types": "off",
