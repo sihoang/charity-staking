@@ -18,6 +18,7 @@ const styles = {
   },
 };
 
+
 class Web3Account extends React.Component {
   renderNoWeb3(props) {
     const { blockchainError } = props.blockchain;
@@ -49,12 +50,16 @@ class Web3Account extends React.Component {
   }
 
   renderAccount(props) {
+    const { account, networkId, trstBalance } = props.blockchain;
     return (
       <ListItem>
         <ListItemAvatar>
           <Avatar src={eth} />
         </ListItemAvatar>
-        <ListItemText primary={props.blockchain.account} />
+        <ListItemText
+          primary={account}
+          secondary={`Network: ${networkId} - TRST: ${trstBalance}`}
+        />
       </ListItem>
     );
   }
