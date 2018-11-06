@@ -4,6 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@material-ui/core/Icon';
 import TRST from 'Embark/contracts/TRST';
 import TimeLockedStaking from 'Embark/contracts/TimeLockedStaking';
 import SearchInput from './SearchInput';
@@ -28,6 +33,12 @@ const styles = theme => ({
   },
 });
 
+const status = {
+  PENDING: 'PENDING',
+  NOT_STARTED: 'NOT_STARTED',
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE',
+};
 class StakeNow extends React.Component {
   constructor(props) {
     super(props);
@@ -36,12 +47,21 @@ class StakeNow extends React.Component {
       durationInDays: 30,
       amount: 100,
       errorMessage: null,
+      isStaking: false,
+      approvalStatus: status.NOT_STARTED,
+      stakingStatus: status.NOT_STARTED,
     };
     this.onSelectedNpo = this.onSelectedNpo.bind(this);
     this.onChangeAmount = this.onChangeAmount.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.handleStakeNow = this.handleStakeNow.bind(this);
     this.setErrorMessage = this.setErrorMessage.bind(this);
+    this.renderStakingSteps = this.renderStakingSteps.bind(this);
+    this.setApprovalSuccess = this.setApprovalSuccess.bind(this);
+    this.setApprovalFailure = this.setApprovalFailure.bind(this);
+    this.setStakingSuccess = this.setStakingSuccess.bind(this);
+    this.setStakingFailure = this.setStakingFailure.bind(this);
+    this.renderStakingSteps = this.renderStakingSteps.bind(this);
   }
 
   onSelectedNpo(data) {
@@ -72,6 +92,42 @@ class StakeNow extends React.Component {
     }), 5000);
   }
 
+  setApprovalSuccess() {
+    this.setState({
+      approvalStatus: status.SUCCESS,
+      stakingStatus: status.PENDING,
+    });
+  }
+
+  setApprovalFailure(err) {
+    this.setState({
+      approvalStatus: status.FAILURE,
+      stakingStatus: status.FAILURE,
+    });
+    this.setErrorMessage(err.message || 'Error while approving TRST transfer.');
+  }
+
+  setStakingSuccess() {
+    this.setState({
+      stakingStatus: status.SUCCESS,
+    });
+  }
+
+  setStakingFailure(err) {
+    this.setState({
+      stakingStatus: status.FAILURE,
+    });
+    this.setErrorMessage(err.message || 'Error while calling Stake contract.');
+  }
+
+  startStaking() {
+    this.setState({
+      isStaking: true,
+      approvalStatus: status.PENDING,
+      stakingStatus: status.NOT_STARTED,
+    });
+  }
+
   handleStakeNow(e) {
     e.preventDefault();
 
@@ -81,21 +137,25 @@ class StakeNow extends React.Component {
       return;
     }
 
+    this.startStaking();
+
     const { amount } = this.state;
     const { blockchain } = this.props;
     const stakeAmount = blockchain.web3.utils.toWei(amount.toString(), 'mwei');
     TRST.methods.approve(TimeLockedStaking.address, stakeAmount).send()
       .then(() => {
+        this.setApprovalSuccess();
         TimeLockedStaking.methods.stake(stakeAmount, '0x').send()
           .then(() => {
+            this.setStakingSuccess();
             console.log('Thanks for staking!');
           })
           .catch((err) => {
-            this.setErrorMessage(err.message || 'Error while calling Stake contract.');
+            this.setStakingFailure(err);
           });
       })
       .catch((err) => {
-        this.setErrorMessage(err.message || 'Error while approving TRST transfer.');
+        this.setApprovalFailure(err);
       });
   }
 
@@ -132,7 +192,6 @@ class StakeNow extends React.Component {
       return 'Please choose your favorite NPO.';
     }
 
-    // TODO validate network id
     if (EmbarkJS.environment === 'testnet') {
       if (networkId !== '4') {
         return 'Please use Rinkeby network.';
@@ -144,6 +203,7 @@ class StakeNow extends React.Component {
         return 'Please use Main Ethereum network.';
       }
     }
+
     return null;
   }
 
@@ -198,10 +258,62 @@ class StakeNow extends React.Component {
     );
   }
 
+  renderStatusIcon(currentStatus) {
+    let className;
+    switch (currentStatus) {
+      case status.SUCCESS:
+        className = 'fa fa-check-circle';
+        break;
+      case status.FAILURE:
+        className = 'fa fa-exclamation-circle';
+        break;
+      case status.NOT_STARTED:
+        className = 'fa fa-circle';
+        break;
+      default:
+        className = 'fas fa-spinner fa-pulse';
+    }
+
+    return (
+      <ListItemIcon>
+        <Icon className={className} />
+      </ListItemIcon>
+    );
+  }
+
+  renderStep(number, text, currentStatus) {
+    return (
+      <ListItem>
+        {this.renderStatusIcon(currentStatus)}
+        <ListItemText
+          primary={`Step ${number}: ${text}`}
+          primaryTypographyProps={{
+            variant: 'subtitle1',
+          }}
+        />
+      </ListItem>
+    );
+  }
+
+  renderStakingSteps() {
+    const { approvalStatus, stakingStatus } = this.state;
+    return (
+      <Grid
+        container
+        justify="center"
+      >
+        <List>
+          {this.renderStep(1, 'Approve TRST transfer.', approvalStatus)}
+          {this.renderStep(2, 'Calling Stake contract.', stakingStatus)}
+        </List>
+      </Grid>
+    );
+  }
+
   render() {
     const { classes } = this.props;
     const {
-      npo, amount, durationInDays, errorMessage,
+      npo, amount, durationInDays, errorMessage, isStaking,
     } = this.state;
     return (
       <div className={classes.root}>
@@ -237,6 +349,7 @@ class StakeNow extends React.Component {
           justify="center"
           className={classes.buttonGrid}
         >
+          {isStaking && this.renderStakingSteps()}
           {errorMessage && this.renderErrorMessage(errorMessage)}
           {this.renderButton({
             ...this.props,
