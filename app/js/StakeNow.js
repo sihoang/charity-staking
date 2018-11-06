@@ -27,14 +27,16 @@ class StakeNow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selection: {},
+      npo: {},
+      durationInDays: 30,
+      amount: 100,
     };
-    this.onSelected = this.onSelected.bind(this);
+    this.onSelectedNpo = this.onSelectedNpo.bind(this);
   }
 
-  onSelected(selection) {
+  onSelectedNpo(data) {
     this.setState({
-      selection,
+      npo: data,
     });
   }
 
@@ -75,7 +77,7 @@ class StakeNow extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { selection } = this.state;
+    const { npo, amount, durationInDays } = this.state;
     return (
       <div className={classes.root}>
         <Grid
@@ -85,13 +87,23 @@ class StakeNow extends React.Component {
           alignItems="center"
           alignContent="center"
         >
-          {this.renderGridItem(this.props, <StakeAmountInput />)}
-          {this.renderGridItem(this.props, <StakeDurationInput />)}
+          {this.renderGridItem(
+            this.props,
+            <StakeAmountInput
+              defaultAmount={amount}
+            />,
+          )}
+          {this.renderGridItem(
+            this.props,
+            <StakeDurationInput
+              defaultDuration={durationInDays}
+            />,
+          )}
         </Grid>
 
-        <SearchInput onSelected={this.onSelected} />
-        { selection.name
-            && <NPOInfo data={selection} />
+        <SearchInput onSelected={this.onSelectedNpo} />
+        { npo.name
+            && <NPOInfo data={npo} />
         }
 
         <Grid
@@ -104,7 +116,7 @@ class StakeNow extends React.Component {
           {this.renderButton({
             ...this.props,
             color: 'primary',
-          }, 'Stake Now!')}
+          }, 'Stake Now')}
 
           {this.renderButton({
             ...this.props,

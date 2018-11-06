@@ -5,16 +5,16 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 const durations = [
   {
-    value: '1',
-    label: '1 month',
+    value: 30,
+    label: '30 days',
   },
   {
-    value: '6',
-    label: '6 months',
+    value: 180,
+    label: '180 days',
   },
   {
-    value: '12',
-    label: '12 months',
+    value: 365,
+    label: '365 days',
   },
 ];
 
@@ -22,7 +22,7 @@ class StakeDurationInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      duration: durations[0].value,
+      duration: props.defaultDuration || durations[0].value,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -31,6 +31,12 @@ class StakeDurationInput extends React.Component {
     this.setState({
       duration: event.target.value,
     });
+
+    // trigger parent's onChange
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(event);
+    }
   }
 
   render() {

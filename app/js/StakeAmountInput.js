@@ -6,7 +6,7 @@ class StakeAmountInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 100,
+      amount: props.defaultAmount || 100,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -15,6 +15,12 @@ class StakeAmountInput extends React.Component {
     this.setState({
       amount: event.target.value,
     });
+
+    // trigger parent's onChange
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(event);
+    }
   }
 
   render() {
@@ -23,9 +29,10 @@ class StakeAmountInput extends React.Component {
       <div>
         <TextField
           fullWidth
-          label="Enter the amount"
+          label="Enter an amount"
           onChange={this.handleChange}
           value={amount}
+          type="number"
           InputLabelProps={{
             shrink: true,
           }}
