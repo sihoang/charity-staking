@@ -7,7 +7,7 @@ import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
-
+import withBlockchain from './withBlockchain';
 
 const styles = theme => ({
   root: {
@@ -144,4 +144,4 @@ class StakeNow extends React.Component {
   }
 }
 
-export default withStyles(styles)(StakeNow);
+export default withStyles(styles)(withBlockchain(StakeNow));

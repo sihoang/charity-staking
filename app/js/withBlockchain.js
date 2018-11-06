@@ -1,7 +1,6 @@
 import React from 'react';
 import EmbarkJS from 'Embark/EmbarkJS';
 import TRST from 'Embark/contracts/TRST';
-import Typography from '@material-ui/core/Typography';
 
 // 1 TRST = 1e6 wei = 1 mwei
 const getTrstBalance = account => TRST
@@ -72,10 +71,7 @@ const withBlockchain = ChildComponent => class extends React.Component {
   }
 
   render() {
-    const { web3 } = this.state;
-    return !web3
-      ? <Typography>Status: Cannot find Web3. Please install Metamask!</Typography>
-      : <ChildComponent {...this.props} blockchain={this.state} />;
+    return <ChildComponent {...this.props} blockchain={this.state} />;
   }
 };
 
