@@ -34,7 +34,6 @@ class SearchInput extends React.Component {
   onStateChange() {
     return debounce(({ inputValue }) => {
       if (typeof inputValue !== 'undefined') {
-        console.log(`debounced ${inputValue}`);
         this.queryDataByName(inputValue);
       }
     }, 500);

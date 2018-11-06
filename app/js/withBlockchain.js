@@ -17,7 +17,8 @@ const withBlockchain = ChildComponent => class extends React.Component {
       web3: null,
       account: null,
       networkId: 'loading',
-      trstBalance: 'loading',
+      trstBalance: '0',
+      EmbarkJS: null,
     };
   }
 
@@ -41,6 +42,7 @@ const withBlockchain = ChildComponent => class extends React.Component {
           networkId: networkId.toString(),
           account: accounts[0],
           web3,
+          EmbarkJS,
         });
         getTrstBalance(accounts[0]).then((trstBalance) => {
           this.setState({ trstBalance });
