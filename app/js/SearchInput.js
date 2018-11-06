@@ -8,6 +8,7 @@ import Icon from '@material-ui/core/Icon';
 import Downshift from 'downshift';
 import debounce from 'lodash.debounce';
 import axios from 'axios';
+import config from '../../config/webserver';
 
 
 const styles = theme => ({
@@ -50,7 +51,7 @@ class SearchInput extends React.Component {
 
   queryDataByName(name) {
     axios.get(
-      `http://localhost:8001/charities?name=${name}`,
+      `${config.charityManagmentServ}/charities?name=${name}`,
     ).then((res) => {
       const charities = res.data.records;
       this.setState({ charities });

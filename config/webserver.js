@@ -3,4 +3,5 @@ module.exports = {
   host: 'localhost',
   openBrowser: true,
   port: 8000,
+  charityManagmentServ: 'http://localhost:8001',
 };
