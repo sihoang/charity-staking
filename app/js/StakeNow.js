@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import TRST from 'Embark/contracts/TRST';
+import TimeLockedStaking from 'Embark/contracts/TimeLockedStaking';
 import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
@@ -39,6 +41,7 @@ class StakeNow extends React.Component {
     this.onChangeAmount = this.onChangeAmount.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.handleStakeNow = this.handleStakeNow.bind(this);
+    this.setErrorMessage = this.setErrorMessage.bind(this);
   }
 
   onSelectedNpo(data) {
@@ -59,20 +62,43 @@ class StakeNow extends React.Component {
     });
   }
 
+  setErrorMessage(err) {
+    window.clearTimeout(this.timeOut);
+    this.setState({
+      errorMessage: err,
+    });
+    this.timeOut = window.setTimeout(() => this.setState({
+      errorMessage: null,
+    }), 5000);
+  }
+
   handleStakeNow(e) {
     e.preventDefault();
 
-    const err = this.validateInput(this.props, this.state);
-    if (err) {
-      window.clearTimeout(this.timeOut);
-      this.setState({
-        errorMessage: err,
-      });
-      this.timeOut = window.setTimeout(() => this.setState({
-        errorMessage: null,
-      }), 2000);
+    const inputError = this.validateInput(this.props, this.state);
+    if (inputError) {
+      this.setErrorMessage(inputError);
+      return;
     }
+
+    const { amount } = this.state;
+    const { blockchain } = this.props;
+    const stakeAmount = blockchain.web3.utils.toWei(amount.toString(), 'mwei');
+    TRST.methods.approve(TimeLockedStaking.address, stakeAmount).send()
+      .then(() => {
+        TimeLockedStaking.methods.stake(stakeAmount, '0x').send()
+          .then(() => {
+            console.log('Thanks for staking!');
+          })
+          .catch((err) => {
+            this.setErrorMessage(err.message || 'Error while calling Stake contract.');
+          });
+      })
+      .catch((err) => {
+        this.setErrorMessage(err.message || 'Error while approving TRST transfer.');
+      });
   }
+
 
   validateInput(props, state) {
     const {
