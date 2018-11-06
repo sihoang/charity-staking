@@ -32,11 +32,25 @@ class StakeNow extends React.Component {
       amount: 100,
     };
     this.onSelectedNpo = this.onSelectedNpo.bind(this);
+    this.onChangeAmount = this.onChangeAmount.bind(this);
+    this.onChangeDuration = this.onChangeDuration.bind(this);
   }
 
   onSelectedNpo(data) {
     this.setState({
       npo: data,
+    });
+  }
+
+  onChangeAmount(event) {
+    this.setState({
+      amount: event.target.value,
+    });
+  }
+
+  onChangeDuration(event) {
+    this.setState({
+      durationInDays: event.target.value,
     });
   }
 
@@ -90,13 +104,15 @@ class StakeNow extends React.Component {
           {this.renderGridItem(
             this.props,
             <StakeAmountInput
-              defaultAmount={amount}
+              amount={amount}
+              onChange={this.onChangeAmount}
             />,
           )}
           {this.renderGridItem(
             this.props,
             <StakeDurationInput
-              defaultDuration={durationInDays}
+              duration={durationInDays}
+              onChange={this.onChangeDuration}
             />,
           )}
         </Grid>

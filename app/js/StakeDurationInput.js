@@ -19,35 +19,15 @@ const durations = [
 ];
 
 class StakeDurationInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      duration: props.defaultDuration || durations[0].value,
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({
-      duration: event.target.value,
-    });
-
-    // trigger parent's onChange
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(event);
-    }
-  }
-
   render() {
-    const { duration } = this.state;
+    const { duration, onChange } = this.props;
     return (
       <div>
         <TextField
           fullWidth
           select
           value={duration}
-          onChange={this.handleChange}
+          onChange={onChange}
           label="Select a lock-up duration"
           InputLabelProps={{
             shrink: true,
