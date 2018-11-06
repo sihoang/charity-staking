@@ -53,7 +53,8 @@ const withBlockchain = ChildComponent => class extends React.Component {
       web3.currentProvider.publicConfigStore.on('update', (newData) => {
         const { account, networkId } = this.state;
         const { selectedAddress, networkVersion } = newData;
-        if (selectedAddress.toLowerCase() !== account.toLowerCase()) {
+
+        if (String(selectedAddress).toLowerCase() !== String(account).toLowerCase()) {
           this.setState({
             account: selectedAddress,
           });
@@ -66,11 +67,14 @@ const withBlockchain = ChildComponent => class extends React.Component {
         }
 
         getTrstBalance(account).then((trstBalance) => {
-          this.setState({ trstBalance });
+          this.setState({
+            trstBalance,
+          });
         });
       });
     });
   }
+
 
   render() {
     return <ChildComponent {...this.props} blockchain={this.state} />;
