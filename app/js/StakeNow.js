@@ -288,13 +288,13 @@ class StakeNow extends React.Component {
   renderStep(number, text, currentStatus) {
     return (
       <ListItem>
-        {this.renderStatusIcon(currentStatus)}
         <ListItemText
           primary={`Step ${number}: ${text}`}
           primaryTypographyProps={{
             variant: 'subtitle1',
           }}
         />
+        {this.renderStatusIcon(currentStatus)}
       </ListItem>
     );
   }
