@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { HashLink as Link } from 'react-router-hash-link';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -15,8 +16,6 @@ import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
-import withBlockchain from './withBlockchain';
-import { refreshedContract } from './utils';
 
 const styles = theme => ({
   root: {
@@ -141,9 +140,9 @@ class StakeNow extends React.Component {
     this.startStaking();
 
     const { amount } = this.state;
-    const { blockchain } = this.props;
-    const stakeAmount = blockchain.web3.utils.toWei(amount.toString(), 'mwei');
-    refreshedContract(blockchain.web3, TRST)
+    const { web3 } = this.props;
+    const stakeAmount = web3.utils.toWei(amount.toString(), 'mwei');
+    TRST
       .methods
       .approve(TimeLockedStaking.address, stakeAmount)
       .send()
@@ -166,8 +165,8 @@ class StakeNow extends React.Component {
 
   validateInput(props, state) {
     const {
-      web3, account, trstBalance, networkId, EmbarkJS,
-    } = props.blockchain;
+      web3, account, trstBalance, networkId,
+    } = props;
     const { amount, npo, durationInDays } = state;
 
     if (!web3) {
@@ -371,4 +370,11 @@ class StakeNow extends React.Component {
   }
 }
 
-export default withStyles(styles)(withBlockchain(StakeNow));
+const mapStateToProps = state => ({
+  account: state.account,
+  networkId: state.networkId,
+  trstBalance: state.trstBalance,
+  web3: state.web3,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(StakeNow));

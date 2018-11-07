@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,7 +7,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import withBlockchain from './withBlockchain';
 import eth from '../images/eth-icon.png';
 
 const styles = {
@@ -21,7 +21,6 @@ const styles = {
 
 class Web3Account extends React.Component {
   renderNoWeb3(props) {
-    const { blockchainError } = props.blockchain;
     return (
       <ListItem>
         <ListItemAvatar>
@@ -30,7 +29,7 @@ class Web3Account extends React.Component {
           </Avatar>
         </ListItemAvatar>
         <ListItemText
-          primary={blockchainError || 'Please install MetaMask'}
+          primary="Please install MetaMask"
         />
       </ListItem>
     );
@@ -50,7 +49,7 @@ class Web3Account extends React.Component {
   }
 
   renderAccount(props) {
-    const { account, networkId, trstBalance } = props.blockchain;
+    const { account, networkId, trstBalance } = props;
     return (
       <ListItem>
         <ListItemAvatar>
@@ -65,8 +64,7 @@ class Web3Account extends React.Component {
   }
 
   render() {
-    const { blockchain } = this.props;
-    const { web3, account } = blockchain;
+    const { web3, account } = this.props;
     return (
       <List>
         {!web3 && this.renderNoWeb3(this.props)}
@@ -77,4 +75,11 @@ class Web3Account extends React.Component {
   }
 }
 
-export default withStyles(styles)(withBlockchain(Web3Account));
+const mapStateToProps = state => ({
+  account: state.account,
+  networkId: state.networkId,
+  web3: state.web3,
+  trstBalance: state.trstBalance,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Web3Account));
