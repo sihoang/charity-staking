@@ -147,12 +147,13 @@ class StakeNow extends React.Component {
       .send()
       .then(() => {
         this.setApprovalSuccess();
-        loadContract('TimeLockedStaking').methods.stake(stakeAmount, '0x').send()
+        loadContract('TimeLockedStaking').methods.stake(stakeAmount, '0x').send({ gas: '150000' })
           .then(() => {
             this.setStakingSuccess();
             console.log('Thanks for staking!');
           })
           .catch((err) => {
+            console.log(err);
             this.setStakingFailure(err);
           });
       })
@@ -254,7 +255,7 @@ class StakeNow extends React.Component {
         container
         justify="center"
       >
-        <Typography color="error">
+        <Typography color="error" noWrap>
           {errorMessage}
         </Typography>
       </Grid>
