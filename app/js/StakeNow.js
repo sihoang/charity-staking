@@ -215,6 +215,7 @@ class StakeNow extends React.Component {
       <Grid
         item
         className={classes.input}
+        xs={12}
         sm={12}
         md={6}
       >
