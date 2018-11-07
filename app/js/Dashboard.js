@@ -4,12 +4,11 @@ import Icon from '@material-ui/core/Icon';
 import NumberCard from './NumberCard';
 import TRSTIcon from './TRSTIcon';
 
-const styles = theme => ({
+const styles = {
   root: {
-    padding: theme.mixins.toolbar.minHeight,
     margin: 'auto',
   },
-});
+};
 
 
 class Dashboard extends React.Component {

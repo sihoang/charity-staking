@@ -7,7 +7,7 @@ class NPOInfo extends React.Component {
   render() {
     const { data } = this.props;
     return (
-      <div>
+      <div style={{ visibility: data.name ? 'visible' : 'hidden' }}>
         <List dense>
           <ListItem>
             <ListItemText primary={

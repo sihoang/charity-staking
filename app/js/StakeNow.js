@@ -29,7 +29,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
   },
   buttonGrid: {
-    marginTop: theme.mixins.toolbar.minHeight,
+    marginTop: theme.mixins.toolbar.minHeight / 2,
   },
 });
 
@@ -341,9 +341,7 @@ class StakeNow extends React.Component {
         </Grid>
 
         <SearchInput onSelected={this.onSelectedNpo} />
-        { npo.name
-            && <NPOInfo data={npo} />
-        }
+        <NPOInfo data={npo} />
 
         <Grid
           container
