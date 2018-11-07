@@ -16,6 +16,7 @@ import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
 import withBlockchain from './withBlockchain';
+import { refreshedContract } from './utils';
 
 const styles = theme => ({
   root: {
@@ -142,7 +143,10 @@ class StakeNow extends React.Component {
     const { amount } = this.state;
     const { blockchain } = this.props;
     const stakeAmount = blockchain.web3.utils.toWei(amount.toString(), 'mwei');
-    TRST.methods.approve(TimeLockedStaking.address, stakeAmount).send()
+    refreshedContract(blockchain.web3, TRST)
+      .methods
+      .approve(TimeLockedStaking.address, stakeAmount)
+      .send()
       .then(() => {
         this.setApprovalSuccess();
         TimeLockedStaking.methods.stake(stakeAmount, '0x').send()

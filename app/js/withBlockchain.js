@@ -1,9 +1,10 @@
 import React from 'react';
 import EmbarkJS from 'Embark/EmbarkJS';
 import TRST from 'Embark/contracts/TRST';
+import { refreshedContract } from './utils';
 
 // 1 TRST = 1e6 wei = 1 mwei
-const getTrstBalance = account => TRST
+const getTrstBalance = (web3, account) => refreshedContract(web3, TRST)
   .methods
   .balanceOf(account)
   .call()
@@ -44,7 +45,7 @@ const withBlockchain = ChildComponent => class extends React.Component {
           web3,
           EmbarkJS,
         });
-        getTrstBalance(accounts[0]).then((trstBalance) => {
+        getTrstBalance(web3, accounts[0]).then((trstBalance) => {
           this.setState({ trstBalance });
         });
       });
@@ -66,7 +67,7 @@ const withBlockchain = ChildComponent => class extends React.Component {
           });
         }
 
-        getTrstBalance(account).then((trstBalance) => {
+        getTrstBalance(web3, account).then((trstBalance) => {
           this.setState({
             trstBalance,
           });
