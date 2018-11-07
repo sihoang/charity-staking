@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import EmbarkJS from 'Embark/EmbarkJS';
-import TRST from 'Embark/contracts/TRST';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
@@ -12,6 +11,7 @@ import HomePage from './HomePage';
 import {
   findWeb3, unlockAccount, findNetworkId, lockAccount, findTrstBalance,
 } from './actions';
+import loadContract from './loadContract';
 
 import '../css/main.css';
 
@@ -29,11 +29,11 @@ function App() {
 }
 
 EmbarkJS.onReady(() => {
-  store.dispatch(findWeb3(web3));
+  store.dispatch(findWeb3());
   web3.eth.getAccounts().then((accounts) => {
     if (accounts[0]) {
       store.dispatch(unlockAccount(accounts[0].toLowerCase()));
-      TRST.methods.balanceOf(accounts[0]).call()
+      loadContract('TRST').methods.balanceOf(accounts[0]).call()
         .then((trstBalance) => {
           store.dispatch(findTrstBalance(trstBalance));
         });
@@ -58,14 +58,15 @@ EmbarkJS.onReady(() => {
       const { account, networkId } = store.getState();
       if (account !== selectedAddress) {
         store.dispatch(unlockAccount(selectedAddress));
+        web3.eth.defaultAccount = selectedAddress;
       }
       if (networkId !== networkVersion) {
         store.dispatch(findNetworkId(networkVersion));
       }
-      TRST.methods.balanceOf(selectedAddress).call()
+      loadContract('TRST').methods.balanceOf(selectedAddress).call()
         .then((trstBalance) => {
           store.dispatch(findTrstBalance(trstBalance));
-        });
+        }).catch(console.log);
     });
   }
 });

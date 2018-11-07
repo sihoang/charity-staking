@@ -10,12 +10,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
-import TRST from 'Embark/contracts/TRST';
 import TimeLockedStaking from 'Embark/contracts/TimeLockedStaking';
 import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
+import loadContract from './loadContract';
 
 const styles = theme => ({
   root: {
@@ -140,15 +140,14 @@ class StakeNow extends React.Component {
     this.startStaking();
 
     const { amount } = this.state;
-    const { web3 } = this.props;
     const stakeAmount = web3.utils.toWei(amount.toString(), 'mwei');
-    TRST
+    loadContract('TRST')
       .methods
       .approve(TimeLockedStaking.address, stakeAmount)
       .send()
       .then(() => {
         this.setApprovalSuccess();
-        TimeLockedStaking.methods.stake(stakeAmount, '0x').send()
+        loadContract('TimeLockedStaking').methods.stake(stakeAmount, '0x').send()
           .then(() => {
             this.setStakingSuccess();
             console.log('Thanks for staking!');
@@ -165,11 +164,11 @@ class StakeNow extends React.Component {
 
   validateInput(props, state) {
     const {
-      web3, account, trstBalance, networkId,
+      hasWeb3, account, trstBalance, networkId,
     } = props;
     const { amount, npo, durationInDays } = state;
 
-    if (!web3) {
+    if (!hasWeb3) {
       return 'Cannot find Web3. Please install metamask.';
     }
 
@@ -374,7 +373,7 @@ const mapStateToProps = state => ({
   account: state.account,
   networkId: state.networkId,
   trstBalance: state.trstBalance,
-  web3: state.web3,
+  hasWeb3: state.hasWeb3,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(StakeNow));

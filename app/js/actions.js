@@ -20,6 +20,6 @@ export function findNetworkId(networkId) {
   return { type: WEB3_NETWORK_ID, networkId };
 }
 
-export function findWeb3(web3) {
-  return { type: WEB3_AVAILABLE, web3 };
+export function findWeb3() {
+  return { type: WEB3_AVAILABLE };
 }

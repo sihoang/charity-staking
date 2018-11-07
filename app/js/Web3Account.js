@@ -64,12 +64,12 @@ class Web3Account extends React.Component {
   }
 
   render() {
-    const { web3, account } = this.props;
+    const { hasWeb3, account } = this.props;
     return (
       <List>
-        {!web3 && this.renderNoWeb3(this.props)}
-        {web3 && !account && this.renderNoAccount(this.props)}
-        {web3 && account && this.renderAccount(this.props)}
+        {!hasWeb3 && this.renderNoWeb3(this.props)}
+        {hasWeb3 && !account && this.renderNoAccount(this.props)}
+        {hasWeb3 && account && this.renderAccount(this.props)}
       </List>
     );
   }
@@ -78,7 +78,7 @@ class Web3Account extends React.Component {
 const mapStateToProps = state => ({
   account: state.account,
   networkId: state.networkId,
-  web3: state.web3,
+  hasWeb3: state.hasWeb3,
   trstBalance: state.trstBalance,
 });
 

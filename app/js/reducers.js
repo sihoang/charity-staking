@@ -9,7 +9,7 @@ import {
 const initialState = {
   networkId: 'unknown',
   account: null,
-  web3: null,
+  hasWeb3: false,
   trstBalance: '0',
 };
 
@@ -21,7 +21,7 @@ export default function web3App(state = initialState, action) {
       });
     case WEB3_AVAILABLE:
       return Object.assign({}, state, {
-        web3: action.web3,
+        hasWeb3: true,
       });
     case WEB3_UNLOCK_ACCOUNT:
       return Object.assign({}, state, {
