@@ -124,12 +124,13 @@ contract TimeLockedStaking is ERC165, ISimpleStaking {
 
   /// @dev Get the unlockedAt (if any) in the data field.
   /// Maximum of 365 days from now.
-  /// @param data The right-most 256 bits are unix timestamp of unlockedAt.
+  /// @param data The left-most 256 bits are unix timestamp in seconds.
   /// @return The unlockedAt in the data or 365 days from now whichever is sooner.
   function getUnlockedAtSignal(bytes data) public view returns (uint256) {
     uint256 unlockedAt;
     assembly {
-      unlockedAt := mload(add(data, 256))
+      let d := add(data, 32)  // first 32 bytes are the padded length of data
+      unlockedAt := mload(d)
     }
 
     // Maximum 365 days from now
