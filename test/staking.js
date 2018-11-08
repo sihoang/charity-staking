@@ -42,22 +42,15 @@ contract("SimpleStorage", function () {
 }
 */
 
-const { getTrstBalance, getTotalStakedFor, getTotalStaked } = require('./utils');
+const {
+  testSetup, getTrstBalance, getTotalStakedFor, getTotalStaked,
+} = require('./utils');
 
 const StakingContract = embark.require('Embark/contracts/TimeLockedStaking');
 const TRST = embark.require('Embark/contracts/TRST');
 
 let trstHolder;
-config({
-  contracts: {
-    TRST: {
-      args: ['$accounts[0]'],
-    },
-    TimeLockedStaking: {
-      args: ['$TRST'],
-    },
-  },
-}, (err, web3Accounts) => {
+testSetup((err, web3Accounts) => {
   [trstHolder] = web3Accounts;
 });
 

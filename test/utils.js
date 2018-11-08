@@ -12,8 +12,22 @@ const getTotalStaked = async contract => new web3.utils.BN(
   await contract.methods.totalStaked().call(),
 );
 
+const testSetup = (callback) => {
+  config({
+    contracts: {
+      TRST: {
+        args: ['$accounts[0]'],
+      },
+      TimeLockedStaking: {
+        args: ['$TRST'],
+      },
+    },
+  }, callback);
+};
+
 module.exports = {
   getTrstBalance,
   getTotalStakedFor,
   getTotalStaked,
+  testSetup,
 };
