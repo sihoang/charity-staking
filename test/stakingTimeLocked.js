@@ -38,12 +38,13 @@ const runMatrix = (matrix) => {
   }
 };
 
-contract('getUnlockedAtSignal matrix of happy cases', async () => {
-  const now = Math.floor(Date.now() / 1000);
-  const oneDay = 24 * 60 * 60;
-  const tomorrow = now + oneDay;
-  const oneYearFromNow = now + 365 * oneDay;
+const now = Math.floor(Date.now() / 1000);
+const oneDay = 24 * 60 * 60;
+const tomorrow = now + oneDay;
+const oneYearFromNow = now + 365 * oneDay;
+const moreThanAYearFromNow = oneYearFromNow + oneDay;
 
+contract('Test getUnlockedAtSignal matrix of happy cases', async () => {
   runMatrix([
     ['all 0s', '0', '0', '0'],
     ['only vote signal', '0', '1', '0'],
@@ -58,7 +59,7 @@ contract('getUnlockedAtSignal matrix of happy cases', async () => {
   ]);
 });
 
-contract('getUnlockedAtSignal edge cases', () => {
+contract('Test getUnlockedAtSignal edge cases', () => {
   it('should return 0 when input is empty', async () => {
     const timeLocked = await StakingContract.methods.getUnlockedAtSignal('0x').call();
     assert.equal(timeLocked, 0);
@@ -84,11 +85,6 @@ contract('getUnlockedAtSignal edge cases', () => {
   });
 
   it('should return 1 year max', async () => {
-    const now = Math.floor(Date.now() / 1000);
-    const oneDay = 24 * 60 * 60;
-    const oneYearFromNow = now + 365 * oneDay;
-    const moreThanAYearFromNow = oneYearFromNow + oneDay;
-
     const input = buildBytesInput(moreThanAYearFromNow, '0');
     const timeLocked = await StakingContract.methods.getUnlockedAtSignal(input).call();
     // compare by the minutes instead of seconds
@@ -96,3 +92,10 @@ contract('getUnlockedAtSignal edge cases', () => {
     assert.equal(Math.floor(timeLocked / 60), Math.floor(oneYearFromNow / 60));
   });
 });
+
+contract('Test unstake when there is timelocked', async () => {
+  it('should throw when unstake', async() => {
+    // stake first
+    //
+  })
+})
