@@ -7,6 +7,7 @@
     "lint-sol": "solium -d contracts/",
     "lint-js": "eslint '**/*.js' --ignore-pattern dist/",
     "lint": "run-p lint-sol lint-js",
+    "build": "embark build",
     "test": "embark test"
   },
   "engine": {
@@ -17,7 +18,6 @@
   "homepage": "",
   "devDependencies": {
     "embark": "^3.2.3",
-    "embark-solium": "0.0.1",
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",

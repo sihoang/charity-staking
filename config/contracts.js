@@ -68,6 +68,17 @@ module.exports = {
   // merges with the settings in default
   // used with "embark run testnet"
   testnet: {
+    contracts: {
+      TRST: {
+        address: '0x838A95A661BA3A9c314ED4951bD9Addc220A04A7',
+      },
+      TimeLockedStaking: {
+        address: '0x9b8d8961931B271468f27bB89ceAb4C5e656d862',
+      },
+      SafeMath: {
+        address: '0x897635BC992549E9B74ACAE2dE8B857c72dF4bb5',
+      },
+    },
   },
 
   // merges with the settings in default

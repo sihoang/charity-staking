@@ -1,0 +1,7 @@
+*
+!app
+!config
+!contracts
+!embark.json
+!package-lock.json
+!package.json
