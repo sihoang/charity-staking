@@ -2,6 +2,7 @@
 !app
 !config
 !contracts
+!test
 !embark.json
 !package-lock.json
 !package.json

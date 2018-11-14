@@ -1,5 +1,7 @@
 const {
   testSetup,
+  paddedBytes,
+  buildBytesInput,
 } = require('./utils');
 
 const StakingContract = embark.require('Embark/contracts/TimeLockedStaking');
@@ -7,26 +9,11 @@ const StakingContract = embark.require('Embark/contracts/TimeLockedStaking');
 
 testSetup(() => {});
 
-const paddedBytes = (numberString, padSize = 32) => {
-  const { utils } = web3;
-  const hex = utils.toHex(numberString);
-  const padded = utils.padLeft(hex, padSize);
-  return utils.hexToBytes(padded);
-};
-
-const buildBytesInput = (timeSignal, voteSignal, padSize = [32, 32]) => {
-  const paddedTimeSignal = paddedBytes(timeSignal, padSize[0]);
-  const paddedVoteSignal = paddedBytes(voteSignal, padSize[1]);
-  const data = paddedBytes('0').concat(paddedTimeSignal, paddedVoteSignal);
-  const hex = web3.utils.bytesToHex(data);
-  return hex;
-};
-
 
 // Matrix:
 // [
-// [testName, timeSignal1, voteSignal2, expectedOutput2],
-// [testName, timeSignal1, voteSignal2, expectedOutput2],
+// [testName1, timeSignal1, voteSignal1, expectedOutput1],
+// [testName2, timeSignal2, voteSignal2, expectedOutput2],
 // ]
 const runMatrix = (matrix) => {
   for (const testCase of matrix) {

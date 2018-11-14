@@ -15,7 +15,7 @@ import SearchInput from './SearchInput';
 import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
-import loadContract from './loadContract';
+import loadContract, { getStakePayload } from './loadContract';
 
 const styles = theme => ({
   root: {
@@ -139,7 +139,7 @@ class StakeNow extends React.Component {
 
     this.startStaking();
 
-    const { amount } = this.state;
+    const { amount, npo, durationInDays } = this.state;
     const stakeAmount = web3.utils.toWei(amount.toString(), 'mwei');
     loadContract('TRST')
       .methods
@@ -147,7 +147,8 @@ class StakeNow extends React.Component {
       .send()
       .then(() => {
         this.setApprovalSuccess();
-        loadContract('TimeLockedStaking').methods.stake(stakeAmount, '0x').send({ gas: '150000' })
+        const stakePayload = getStakePayload(durationInDays, npo);
+        loadContract('TimeLockedStaking').methods.stake(stakeAmount, stakePayload).send({ gas: '150000' })
           .then(() => {
             this.setStakingSuccess();
             console.log('Thanks for staking!');

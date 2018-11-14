@@ -104,6 +104,30 @@ const stakeAndVerify = async (staker, amountInWei, data, TRST, StakingContract) 
   };
 };
 
+const paddedBytes = (numberString, padSize = 32) => {
+  const { utils } = web3;
+  const hex = utils.toHex(numberString);
+  const padded = utils.padLeft(hex, padSize);
+  return utils.hexToBytes(padded);
+};
+
+/**
+ * Build stake payload from timeSignal and voteSignal
+ * @param timeSignal Locked in duration in seconds
+ * @param voteSignal Any number in string. It is emitted in the event log
+ * but not stored
+ * @param padSize Array of 2 which determine the size of timeSignal and voteSignal
+ * respectively. This is used for testing only. Otherwise, leave it as defaul.
+ * Default [32, 32]
+ */
+const buildBytesInput = (timeSignal, voteSignal, padSize = [32, 32]) => {
+  const paddedTimeSignal = paddedBytes(timeSignal, padSize[0]);
+  const paddedVoteSignal = paddedBytes(voteSignal, padSize[1]);
+  const data = paddedBytes('0').concat(paddedTimeSignal, paddedVoteSignal);
+  const hex = web3.utils.bytesToHex(data);
+  return hex;
+};
+
 module.exports = {
   getTrstBalance,
   getTotalStakedFor,
@@ -113,4 +137,6 @@ module.exports = {
   add,
   sub,
   calculateAmountAfter,
+  paddedBytes,
+  buildBytesInput,
 };
