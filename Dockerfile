@@ -1,4 +1,4 @@
-FROM node:11.1.0
+FROM node:11.1.0 as build-static-files
 
 # Make sure the contracts are already deployed in advanced
 # and contract addresses are specified in the config/contracts
@@ -20,4 +20,8 @@ ARG CMS_URL=http://localhost:8001/api/v0
 COPY . .
 RUN CMS_URL=$CMS_URL npm run build -- $ENVIRONMENT
 
-VOLUME dist
+
+FROM nginx:1-alpine
+COPY --from=build-static-files /app/dist /usr/share/nginx/html
+
+# docker run -p 8000:80 <image>
