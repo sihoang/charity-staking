@@ -5,8 +5,8 @@ FROM node:11.1.0 as build-static-files
 
 # Bring in binary dependencies required by embark
 ARG GETH_PACKAGE=geth-linux-amd64-1.8.17-8bbe7207
-ADD https://gethstore.blob.core.windows.net/builds/$GETH_PACKAGE.tar.gz /
-RUN tar -xvzf $GETH_PACKAGE.tar.gz \
+RUN curl https://gethstore.blob.core.windows.net/builds/$GETH_PACKAGE.tar.gz \
+    | tar xvz \
     && mv $GETH_PACKAGE/geth /usr/local/bin/
 
 WORKDIR /app
@@ -24,4 +24,5 @@ RUN CMS_URL=$CMS_URL npm run build -- $ENVIRONMENT
 FROM nginx:1-alpine
 COPY --from=build-static-files /app/dist /usr/share/nginx/html
 
+EXPOSE 80
 # docker run -p 8000:80 <image>
