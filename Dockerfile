@@ -15,7 +15,7 @@ COPY package.json package-lock.json ./
 RUN npm i
 
 ARG ENVIRONMENT=testnet
-ARG CMS_URL=http://localhost:8001/api/v0
+ARG CMS_URL=https://tcr.wetrust.info/api/v0
 
 COPY . .
 RUN CMS_URL=$CMS_URL npm run build -- $ENVIRONMENT

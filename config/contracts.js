@@ -79,6 +79,9 @@ module.exports = {
         address: '0x897635BC992549E9B74ACAE2dE8B857c72dF4bb5',
       },
     },
+    dappConnection: [
+      '$WEB3',
+    ],
   },
 
   // merges with the settings in default
