@@ -10,6 +10,7 @@ module.exports = {
     },
   },
   "globals": {
+    "CMS_URL": true,
     "EmbarkJS": true,
     "embark": true,
     "config": true,
