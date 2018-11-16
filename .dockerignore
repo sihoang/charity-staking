@@ -6,3 +6,4 @@
 !embark.json
 !package-lock.json
 !package.json
+!webpack.config.js
