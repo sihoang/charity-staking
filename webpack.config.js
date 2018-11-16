@@ -43,22 +43,23 @@ const entry = Object.keys(embarkAssets)
     // webpack context; embark.json "app" keys correspond to lists of .js
     // source paths relative to the top-level dapp dir and may be missing the
     // leading './'
-    obj[key] = embarkAssets[key]
+    const cloned = cloneDeep(obj);
+    cloned[key] = embarkAssets[key]
       .map((file) => {
-        let file_path = file.path;
+        let filePath = file.path;
         if (!file.path.match(/^\.\//)) {
-          file_path = `./${file_path}`;
+          filePath = `./${filePath}`;
         }
-        return file_path;
+        return filePath;
       });
-    return obj;
+    return cloned;
   }, {});
 
 function resolve(pkgName) {
   if (Array.isArray(pkgName)) {
-    const _pkgName = pkgName[0];
-    pkgName[0] = require.resolve(_pkgName);
-    return pkgName;
+    const cloned = cloneDeep(pkgName);
+    cloned[0] = require.resolve(pkgName[0]);
+    return cloned;
   }
   return require.resolve(pkgName);
 }
