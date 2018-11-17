@@ -39,18 +39,9 @@ class SearchInput extends React.Component {
     }, 500);
   }
 
-  getSuggestions(charities, inputValue) {
-    return charities.filter(
-      item => (
-        !inputValue
-        || item.name.toLowerCase().includes(inputValue.toLowerCase())
-      ),
-    );
-  }
-
   queryNpo(search) {
     axios.get(
-      `${CMS_URL}/charities?search=${window.encodeURIComponent(search.replace(' ', '&'))}`,
+      `${CMS_URL}/charities?search=${window.encodeURIComponent(search.replace(/ /g, '&'))}`,
     ).then((res) => {
       const charities = res.data.records;
       this.setState({ charities });
@@ -94,7 +85,6 @@ class SearchInput extends React.Component {
             getInputProps,
             getItemProps,
             isOpen,
-            inputValue,
             highlightedIndex,
             selectedItem,
           }) => (
@@ -118,7 +108,7 @@ class SearchInput extends React.Component {
               {isOpen ? (
                 <Paper square className={classes.results}>
                   {
-                    this.getSuggestions(charities, inputValue)
+                    charities
                       .map((item, index) => this.renderSuggestion({
                         item,
                         index,
