@@ -28,13 +28,13 @@ class SearchInput extends React.Component {
       charities: [],
     };
 
-    this.queryDataByName = this.queryDataByName.bind(this);
+    this.queryNpo = this.queryNpo.bind(this);
   }
 
   onStateChange() {
     return debounce(({ inputValue }) => {
       if (typeof inputValue !== 'undefined') {
-        this.queryDataByName(inputValue);
+        this.queryNpo(inputValue);
       }
     }, 500);
   }
@@ -48,9 +48,9 @@ class SearchInput extends React.Component {
     );
   }
 
-  queryDataByName(name) {
+  queryNpo(search) {
     axios.get(
-      `${CMS_URL}/charities?name=${name}`,
+      `${CMS_URL}/charities?search=${search}`,
     ).then((res) => {
       const charities = res.data.records;
       this.setState({ charities });
