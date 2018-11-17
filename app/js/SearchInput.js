@@ -50,7 +50,7 @@ class SearchInput extends React.Component {
 
   queryNpo(search) {
     axios.get(
-      `${CMS_URL}/charities?search=${search}`,
+      `${CMS_URL}/charities?search=${window.encodeURIComponent(search.replace(' ', '&'))}`,
     ).then((res) => {
       const charities = res.data.records;
       this.setState({ charities });
