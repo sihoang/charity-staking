@@ -11,7 +11,7 @@
     "test": "embark test"
   },
   "engine": {
-    "node": "^10.12.0"
+    "node": "^10.13.0"
   },
   "author": "WeTrustPlatform",
   "license": "GPL-3.0",

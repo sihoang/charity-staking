@@ -1,4 +1,4 @@
-FROM node:11.1.0 as build-static-files
+FROM node:10.13.0 as build-static-files
 
 # Make sure the contracts are already deployed in advanced
 # and contract addresses are specified in the config/contracts
