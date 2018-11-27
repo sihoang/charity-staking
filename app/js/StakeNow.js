@@ -145,7 +145,7 @@ class StakeNow extends React.Component {
       .methods
       .approve(TimeLockedStaking.address, stakeAmount)
       .send()
-      .then(() => {
+      .once('transactionHash', () => {
         this.setApprovalSuccess();
         const stakePayload = getStakePayload(durationInDays, npo);
         loadContract('TimeLockedStaking').methods.stake(stakeAmount, stakePayload).send({ gas: '150000' })
