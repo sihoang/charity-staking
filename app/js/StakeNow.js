@@ -16,6 +16,7 @@ import StakeAmountInput from './StakeAmountInput';
 import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
 import loadContract, { getStakePayload } from './loadContract';
+import stateHelper, { status } from './stateHelper';
 
 const styles = theme => ({
   root: {
@@ -33,12 +34,7 @@ const styles = theme => ({
   },
 });
 
-const status = {
-  PENDING: 'PENDING',
-  NOT_STARTED: 'NOT_STARTED',
-  SUCCESS: 'SUCCESS',
-  FAILURE: 'FAILURE',
-};
+
 class StakeNow extends React.Component {
   constructor(props) {
     super(props);
@@ -48,19 +44,15 @@ class StakeNow extends React.Component {
       amount: 100,
       errorMessage: null,
       isStaking: false,
-      approvalStatus: status.NOT_STARTED,
-      stakingStatus: status.NOT_STARTED,
+      [stateHelper.tx.approveTRST]: stateHelper.initialState(),
+      [stateHelper.tx.stakeTRST]: stateHelper.initialState(),
     };
+
     this.onSelectedNpo = this.onSelectedNpo.bind(this);
     this.onChangeAmount = this.onChangeAmount.bind(this);
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.handleStakeNow = this.handleStakeNow.bind(this);
     this.setErrorMessage = this.setErrorMessage.bind(this);
-    this.renderStakingSteps = this.renderStakingSteps.bind(this);
-    this.setApprovalSuccess = this.setApprovalSuccess.bind(this);
-    this.setApprovalFailure = this.setApprovalFailure.bind(this);
-    this.setStakingSuccess = this.setStakingSuccess.bind(this);
-    this.setStakingFailure = this.setStakingFailure.bind(this);
     this.renderStakingSteps = this.renderStakingSteps.bind(this);
   }
 
@@ -92,40 +84,12 @@ class StakeNow extends React.Component {
     }), 5000);
   }
 
-  setApprovalSuccess() {
-    this.setState({
-      approvalStatus: status.SUCCESS,
-      stakingStatus: status.PENDING,
-    });
-  }
-
-  setApprovalFailure(err) {
-    this.setState({
-      approvalStatus: status.FAILURE,
-      stakingStatus: status.FAILURE,
-    });
-    this.setErrorMessage(err.message || 'Error while approving TRST transfer.');
-  }
-
-  setStakingSuccess() {
-    this.setState({
-      stakingStatus: status.SUCCESS,
-    });
-  }
-
-  setStakingFailure(err) {
-    this.setState({
-      stakingStatus: status.FAILURE,
-    });
-    this.setErrorMessage(err.message || 'Error while calling Stake contract.');
-  }
-
   startStaking() {
     this.setState({
       isStaking: true,
-      approvalStatus: status.PENDING,
-      stakingStatus: status.NOT_STARTED,
     });
+    stateHelper.setPending(this, stateHelper.tx.approveTRST);
+    stateHelper.setNotStarted(this, stateHelper.tx.stakeTRST);
   }
 
   handleStakeNow(e) {
@@ -145,21 +109,26 @@ class StakeNow extends React.Component {
       .methods
       .approve(TimeLockedStaking.address, stakeAmount)
       .send()
-      .once('transactionHash', () => {
-        this.setApprovalSuccess();
+      .once('transactionHash', (approveTxHash) => {
+        stateHelper.setTriggered(this, stateHelper.tx.approveTRST, approveTxHash);
+        stateHelper.setPending(this, stateHelper.tx.stakeTRST);
         const stakePayload = getStakePayload(durationInDays, npo);
         loadContract('TimeLockedStaking').methods.stake(stakeAmount, stakePayload).send({ gas: '150000' })
+          .once('transactionHash', (stakeTxHash) => {
+            stateHelper.setTriggered(this, stateHelper.tx.stakeTRST, stakeTxHash);
+          })
           .then(() => {
-            this.setStakingSuccess();
-            console.log('Thanks for staking!');
+            stateHelper.setSuccess(this, stateHelper.tx.stakeTRST);
           })
           .catch((err) => {
-            console.log(err);
-            this.setStakingFailure(err);
+            stateHelper.setFailure(this, stateHelper.tx.stakeTRST, err);
           });
       })
+      .then(() => {
+        stateHelper.setSuccess(this, stateHelper.tx.approveTRST);
+      })
       .catch((err) => {
-        this.setApprovalFailure(err);
+        stateHelper.setFailure(this, stateHelper.tx.approveTRST, err);
       });
   }
 
@@ -196,16 +165,14 @@ class StakeNow extends React.Component {
       return 'Please choose your favorite NPO.';
     }
 
-    if (EmbarkJS.environment === 'testnet') {
-      if (networkId !== '4') {
-        return 'Please use Rinkeby network.';
-      }
+    if (EmbarkJS.environment === 'testnet'
+      && networkId !== '4') {
+      return 'Please use Rinkeby network.';
     }
 
-    if (EmbarkJS.environment === 'livenet') {
-      if (networkId !== '1') {
-        return 'Please use Main Ethereum network.';
-      }
+    if (EmbarkJS.environment === 'livenet'
+      && networkId !== '1') {
+      return 'Please use Main Ethereum network.';
     }
 
     return null;
@@ -301,15 +268,18 @@ class StakeNow extends React.Component {
   }
 
   renderStakingSteps() {
-    const { approvalStatus, stakingStatus } = this.state;
+    const {
+      [stateHelper.tx.approveTRST]: approveTx,
+      [stateHelper.tx.stakeTRST]: stakeTx,
+    } = this.state;
     return (
       <Grid
         container
         justify="center"
       >
         <List>
-          {this.renderStep(1, 'Approve TRST transfer.', approvalStatus)}
-          {this.renderStep(2, 'Calling Stake contract.', stakingStatus)}
+          {this.renderStep(1, 'Approve TRST transfer.', approveTx.txStatus)}
+          {this.renderStep(2, 'Calling Stake contract.', stakeTx.txStatus)}
         </List>
       </Grid>
     );

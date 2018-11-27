@@ -128,7 +128,7 @@ const base = {
   plugins: [
     new HardSourceWebpackPlugin(),
     new webpack.DefinePlugin({
-      CMS_URL: JSON.stringify(process.env.CMS_URL || 'http://localhost:8001/api/v0'),
+      CMS_URL: JSON.stringify(process.env.CMS_URL || 'https://tcr.wetrust.info/api/v0'),
     }),
   ],
   // profiling and generating verbose stats increases build time; if stats
