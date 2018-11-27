@@ -253,7 +253,21 @@ class StakeNow extends React.Component {
     );
   }
 
-  renderStep(number, text, currentStatus) {
+  renderTxLink(txHash) {
+    const subDomain = EmbarkJS.environment === 'livenet' ? '' : 'rinkeby.';
+    return (
+      <a
+        href={`https://${subDomain}etherscan.io/tx/${txHash}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <ListItemText primary="(view tx)" />
+      </a>
+    );
+  }
+
+  renderStep(number, text, currentStatus, txHash) {
+    console.log(txHash);
     return (
       <ListItem>
         <ListItemText
@@ -263,6 +277,7 @@ class StakeNow extends React.Component {
           }}
         />
         {this.renderStatusIcon(currentStatus)}
+        {txHash && this.renderTxLink(txHash)}
       </ListItem>
     );
   }
@@ -278,8 +293,8 @@ class StakeNow extends React.Component {
         justify="center"
       >
         <List>
-          {this.renderStep(1, 'Approve TRST transfer.', approveTx.txStatus)}
-          {this.renderStep(2, 'Calling Stake contract.', stakeTx.txStatus)}
+          {this.renderStep(1, 'Approve TRST transfer.', approveTx.txStatus, approveTx.txHash)}
+          {this.renderStep(2, 'Calling Stake contract.', stakeTx.txStatus, stakeTx.txHash)}
         </List>
       </Grid>
     );
