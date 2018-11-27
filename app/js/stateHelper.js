@@ -34,17 +34,14 @@ const stateHelper = {
     stateHelper.setStatus(context, name, status.PENDING);
   },
   setNotStarted: (context, name) => {
-    context.setState(
-      {
-        [name]: stateHelper.initialState(),
-      },
-    );
+    context.setState({
+      [name]: stateHelper.initialState(),
+    });
   },
   setStatus: (context, name, txStatus) => {
+    const currentState = context.state[name];
     context.setState({
-      [name]: {
-        txStatus,
-      },
+      [name]: Object.assign({}, currentState, { txStatus }),
     });
   },
 };
