@@ -93,6 +93,7 @@ class SearchInput extends React.Component {
                 fullWidth
                 label="Enter your favorite non-profit's name"
                 type="search"
+                margin="normal"
                 InputLabelProps={{
                   shrink: true,
                 }}

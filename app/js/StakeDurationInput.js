@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 const durations = [
@@ -29,6 +28,10 @@ class StakeDurationInput extends React.Component {
           value={duration}
           onChange={onChange}
           label="Select a lock-up duration"
+          margin="normal"
+          SelectProps={{
+            native: true,
+          }}
           InputLabelProps={{
             shrink: true,
           }}
@@ -38,12 +41,12 @@ class StakeDurationInput extends React.Component {
         >
           {
             durations.map(options => (
-              <MenuItem
+              <option
                 key={options.value}
                 value={options.value}
               >
                 {options.label}
-              </MenuItem>
+              </option>
             ))
           }
         </TextField>

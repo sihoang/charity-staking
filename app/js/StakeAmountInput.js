@@ -13,6 +13,7 @@ class StakeAmountInput extends React.Component {
           onChange={onChange}
           value={amount}
           type="number"
+          margin="normal"
           InputLabelProps={{
             shrink: true,
           }}
