@@ -6,7 +6,6 @@ import Icon from '@material-ui/core/Icon';
 
 const styles = theme => ({
   item: {
-    background: theme.palette.primary.main,
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
