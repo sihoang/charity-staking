@@ -10,6 +10,7 @@ import TableBody from '@material-ui/core/TableBody';
 import Paper from '@material-ui/core/Paper';
 import Section from './Section';
 import SectionHeader from './SectionHeader';
+import { txLink } from './formatter';
 
 const styles = theme => ({
   root: {
@@ -20,6 +21,12 @@ const styles = theme => ({
   },
   table: {
     minWidth: 700,
+  },
+  tableCell: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    maxWidth: theme.breakpoints.values.lg / 4,
   },
   unstake: {
     margin: `${theme.mixins.toolbar.minHeight}px auto`,
@@ -46,9 +53,10 @@ class ActivitiesSection extends React.Component {
     );
   }
 
-  renderActivities(activities = []) {
+  renderActivities() {
+    const { classes, accountActivities } = this.props;
     return (
-      activities.map(event => (
+      accountActivities.map(event => (
         <TableRow key={event.id}>
           <TableCell>
             {event.name}
@@ -59,11 +67,14 @@ class ActivitiesSection extends React.Component {
           <TableCell>
             {event.lockedUntil}
           </TableCell>
-          <TableCell>
-            {event.blockNumber}
-          </TableCell>
-          <TableCell>
-            {event.transactionHash}
+          <TableCell className={classes.tableCell}>
+            <a
+              href={txLink(event.transactionHash)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {event.transactionHash}
+            </a>
           </TableCell>
         </TableRow>
       )));
@@ -107,16 +118,13 @@ class ActivitiesSection extends React.Component {
                   Locked Until
                 </TableCell>
                 <TableCell>
-                  Created At
-                </TableCell>
-                <TableCell>
                   Transaction Hash
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {activities.length === 0 && this.renderNoActivities()}
-              {activities.length > 0 && this.renderActivities(activities)}
+              {activities.length > 0 && this.renderActivities()}
             </TableBody>
           </Table>
         </Paper>
