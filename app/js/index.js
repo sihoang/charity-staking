@@ -19,6 +19,8 @@ import {
 import '../css/main.css';
 
 const store = createStore(web3App);
+const { dispatch } = store;
+
 function App() {
   return (
     <Provider store={store}>
@@ -33,24 +35,24 @@ function App() {
 
 
 const onNewAccount = (account) => {
-  store.dispatch(unlockAccount(account));
-  const { dispatch } = store;
+  dispatch(unlockAccount(account));
   dispatchAccountActivities(dispatch, account);
   dispatchTRSTBalance(dispatch, account);
 };
 
 EmbarkJS.onReady(() => {
-  store.dispatch(findWeb3());
+  dispatch(findWeb3());
+
   web3.eth.getAccounts().then((accounts) => {
     if (accounts[0]) {
       onNewAccount(accounts[0].toLowerCase());
     } else {
-      store.dispatch(lockAccount());
+      dispatch(lockAccount());
     }
   });
 
   web3.eth.net.getId().then((networkId) => {
-    store.dispatch(findNetworkId(networkId));
+    dispatch(findNetworkId(networkId));
   });
 
   const { publicConfigStore } = web3.currentProvider;
@@ -59,7 +61,7 @@ EmbarkJS.onReady(() => {
     publicConfigStore.on('update', (updates) => {
       const { selectedAddress, networkVersion } = updates;
       if (!selectedAddress) {
-        store.dispatch(lockAccount());
+        dispatch(lockAccount());
         return;
       }
 
@@ -71,8 +73,9 @@ EmbarkJS.onReady(() => {
       }
 
       if (networkId !== networkVersion) {
-        store.dispatch(findNetworkId(networkVersion));
-        dispatchTRSTBalance(selectedAddress);
+        dispatch(findNetworkId(networkVersion));
+        dispatchTRSTBalance(dispatch, selectedAddress);
+        dispatchAccountActivities(dispatch, selectedAddress);
       }
     });
   }

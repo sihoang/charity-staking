@@ -19,7 +19,7 @@ export default function web3App(state = initialState, action) {
   switch (action.type) {
     case WEB3_NETWORK_ID:
       return Object.assign({}, state, {
-        networkId: action.networkId,
+        networkId: String(action.networkId),
       });
     case WEB3_AVAILABLE:
       return Object.assign({}, state, {
