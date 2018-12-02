@@ -54,9 +54,9 @@ class Web3Account extends React.Component {
     const env = EmbarkJS.environment;
     let errorMessage = '';
     if (env === 'livenet' && networkId !== '1') {
-      errorMessage = 'Please switch to Mainnet.';
+      errorMessage = '- Please switch to Mainnet.';
     } else if (env === 'testnet' && networkId !== '4') {
-      errorMessage = 'Please switch to Rinkeby.';
+      errorMessage = '- Please switch to Rinkeby.';
     }
 
     return (
@@ -66,7 +66,7 @@ class Web3Account extends React.Component {
         </ListItemAvatar>
         <ListItemText
           primary={account}
-          secondary={`Network: ${networkId} - TRST: ${trstBalance}. ${errorMessage}`}
+          secondary={`Network: ${networkId} - TRST: ${trstBalance} ${errorMessage}`}
         />
       </ListItem>
     );
