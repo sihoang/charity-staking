@@ -17,6 +17,7 @@ import StakeDurationInput from './StakeDurationInput';
 import NPOInfo from './NPOInfo';
 import loadContract, { getStakePayload } from './loadContract';
 import stateHelper, { status } from './stateHelper';
+import { txLink } from './formatter';
 
 const styles = theme => ({
   root: {
@@ -254,10 +255,9 @@ class StakeNow extends React.Component {
   }
 
   renderTxLink(txHash) {
-    const subDomain = EmbarkJS.environment === 'livenet' ? '' : 'rinkeby.';
     return (
       <a
-        href={`https://${subDomain}etherscan.io/tx/${txHash}`}
+        href={txLink(txHash)}
         target="_blank"
         rel="noopener noreferrer"
       >

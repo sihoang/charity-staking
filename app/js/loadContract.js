@@ -1,5 +1,6 @@
 import contracts from 'Embark/contracts';
 import assert from 'assert';
+import { prefix0x } from './formatter';
 
 const paddedBytes = (numberString) => {
   const { utils } = web3;
@@ -56,10 +57,10 @@ export function parseStakePayload(payload) {
   // padded to 0x<96 bytes>
   const paddedPayload = padRight(payload, 96);
 
-  const ein = toBN(`0x${paddedPayload.substring(66, 98)}`).toString();
+  const ein = toBN(prefix0x(paddedPayload.substring(66, 98))).toString();
 
   // convert seconds to milliseconds
-  const timestampInMilliseconds = toBN(`0x${paddedPayload.substring(34, 66)}`)
+  const timestampInMilliseconds = toBN(prefix0x(paddedPayload.substring(34, 66)))
     .mul(toBN(1000))
     .toNumber();
   const lockedUntil = new Date(timestampInMilliseconds).toLocaleString();
