@@ -19,7 +19,7 @@ class Navbar extends React.Component {
   renderLink(to, text) {
     return (
       <Link
-        smooth
+        scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'end' })}
         to={to}
       >
         <Button>

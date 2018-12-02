@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { HashLink as Link } from 'react-router-hash-link';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
@@ -53,7 +54,14 @@ class ActivitiesSection extends React.Component {
       <TableRow>
         <TableCell colSpan={4}>
           <div className={classes.noActivities}>
-            {'Look so empty. Please stake!'}
+            It looks so empty.
+            {' '}
+            <Link
+              scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'end' })}
+              to="#main-section"
+            >
+              Please stake!
+            </Link>
           </div>
         </TableCell>
       </TableRow>
