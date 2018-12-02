@@ -8,7 +8,7 @@ class NPOInfo extends React.Component {
     const { data } = this.props;
     return (
       <div style={{ visibility: data.name ? 'visible' : 'hidden' }}>
-        <List dense>
+        <List>
           <ListItem>
             <ListItemText primary={
               `EIN: ${data.ein}.

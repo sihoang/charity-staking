@@ -24,6 +24,24 @@ const theme = createMuiTheme({
         color: '#FAFAFA',
       },
     },
+    MuiTableCell: {
+      head: {
+        fontSize: '1.125rem',
+      },
+      body: {
+        fontSize: '1.125rem',
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        fontSize: '1.125rem',
+      },
+    },
+    MuiInputBase: {
+      root: {
+        fontSize: '1.25rem',
+      },
+    },
   },
 });
 
