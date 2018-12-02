@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import EmbarkJS from 'Embark/EmbarkJS';
-import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
@@ -10,10 +9,12 @@ import web3App from './reducers';
 import theme from './theme';
 import HomePage from './HomePage';
 import {
-  findWeb3, unlockAccount, findNetworkId, lockAccount, findTrstBalance,
-  fetchAccountActivities,
+  findWeb3, unlockAccount, findNetworkId, lockAccount,
 } from './actions';
-import loadContract, { parseStakePayload } from './loadContract';
+import {
+  dispatchTRSTBalance,
+  dispatchAccountActivities,
+} from './dispatch';
 
 import '../css/main.css';
 
@@ -30,53 +31,11 @@ function App() {
   );
 }
 
-const { BN } = web3.utils;
+
 const onNewAccount = (account) => {
   store.dispatch(unlockAccount(account));
-
-  loadContract('TRST').methods.balanceOf(account).call()
-    .then((trstBalance) => {
-      store.dispatch(findTrstBalance(trstBalance));
-    });
-
-  loadContract('TimeLockedStaking').getPastEvents('Staked', {
-    fromBlock: 0,
-    toBlock: 'latest',
-    filter: {
-      user: account,
-    },
-  }, (err, events) => {
-    const transformed = events.map((event) => {
-      const {
-        id, blockNumber, transactionHash, returnValues,
-      } = event;
-      const { amount, data } = returnValues;
-      const { ein, lockedUntil } = parseStakePayload(data);
-      return {
-        id,
-        ein,
-        amount: new BN(amount).div(new BN(1e6)).toString(),
-        lockedUntil,
-        blockNumber,
-        transactionHash,
-      };
-    });
-
-    const populatedNPOPromises = transformed.map(async (record) => {
-      const res = await axios.get(
-        `${CMS_URL}/charities?search=${record.ein}`,
-      );
-      const npo = res.data && res.data.records && res.data.records[0];
-      return {
-        ...npo,
-        ...record,
-      };
-    });
-
-    Promise.all(populatedNPOPromises).then((completed) => {
-      store.dispatch(fetchAccountActivities(completed));
-    });
-  });
+  dispatchAccountActivities(store, account);
+  dispatchTRSTBalance(store, account);
 };
 
 EmbarkJS.onReady(() => {
@@ -112,10 +71,7 @@ EmbarkJS.onReady(() => {
 
       if (networkId !== networkVersion) {
         store.dispatch(findNetworkId(networkVersion));
-        loadContract('TRST').methods.balanceOf(selectedAddress).call()
-          .then((trstBalance) => {
-            store.dispatch(findTrstBalance(trstBalance));
-          }).catch(console.log);
+        dispatchTRSTBalance(selectedAddress);
       }
     });
   }
