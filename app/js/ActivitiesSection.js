@@ -22,11 +22,15 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
-  tableCell: {
+  txHashCell: {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     maxWidth: theme.breakpoints.values.lg / 4,
+  },
+  noActivities: {
+    padding: theme.mixins.toolbar.minHeight,
+    textAlign: 'center',
   },
   unstake: {
     margin: `${theme.mixins.toolbar.minHeight}px auto`,
@@ -44,10 +48,13 @@ class ActivitiesSection extends React.Component {
   }
 
   renderNoActivities() {
+    const { classes } = this.props;
     return (
       <TableRow>
-        <TableCell>
-          You have not staked.
+        <TableCell colSpan={4}>
+          <div className={classes.noActivities}>
+            {'Look so empty. Please stake!'}
+          </div>
         </TableCell>
       </TableRow>
     );
@@ -67,7 +74,7 @@ class ActivitiesSection extends React.Component {
           <TableCell>
             {event.lockedUntil}
           </TableCell>
-          <TableCell className={classes.tableCell}>
+          <TableCell className={classes.txHashCell}>
             <a
               href={txLink(event.transactionHash)}
               target="_blank"

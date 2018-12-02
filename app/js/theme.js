@@ -26,10 +26,11 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       head: {
-        fontSize: '1.125rem',
+        fontSize: '1rem',
+        fontWeight: 'bold',
       },
       body: {
-        fontSize: '1.125rem',
+        fontSize: '1rem',
       },
     },
     MuiInputLabel: {
