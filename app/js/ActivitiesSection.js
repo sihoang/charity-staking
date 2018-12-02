@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
@@ -26,22 +27,72 @@ const styles = theme => ({
   },
 });
 
+
 class ActivitiesSection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      canUnstake: false,
+    };
+  }
+
   renderNoActivities() {
     return (
       <TableRow>
         <TableCell>
-          No activities
+          You have not staked.
         </TableCell>
       </TableRow>
     );
   }
 
+  renderActivities(activities = []) {
+    return (
+      activities.map(event => (
+        <TableRow key={event.id}>
+          <TableCell>
+            {event.name}
+          </TableCell>
+          <TableCell>
+            {event.amount}
+          </TableCell>
+          <TableCell>
+            {event.lockedUntil}
+          </TableCell>
+          <TableCell>
+            {event.blockNumber}
+          </TableCell>
+          <TableCell>
+            {event.transactionHash}
+          </TableCell>
+        </TableRow>
+      )));
+  }
+
+  renderUnstake() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.unstake}>
+        <Button
+          variant="contained"
+          color="disabled"
+          disabled
+        >
+            Unstake
+        </Button>
+      </div>
+    );
+  }
+
   render() {
-    const { classes, color } = this.props;
+    const {
+      classes, color, accountActivities: activities,
+    } = this.props;
+    const { canUnstake } = this.state;
+
     return (
       <Section id="activities-section" color={color}>
-        <SectionHeader>Staking Activities</SectionHeader>
+        <SectionHeader>Activities</SectionHeader>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
@@ -59,25 +110,27 @@ class ActivitiesSection extends React.Component {
                   Created At
                 </TableCell>
                 <TableCell>
-                  Transaction Receipt
+                  Transaction Hash
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody />
+            <TableBody>
+              {activities.length === 0 && this.renderNoActivities()}
+              {activities.length > 0 && this.renderActivities(activities)}
+            </TableBody>
           </Table>
         </Paper>
-        <div className={classes.unstake}>
-          <Button
-            variant="contained"
-            color="disabled"
-            disabled
-          >
-            Unstake
-          </Button>
-        </div>
+        { canUnstake && this.renderUnstake() }
       </Section>
     );
   }
 }
 
-export default withStyles(styles)(ActivitiesSection);
+const mapStateToProps = state => ({
+  account: state.account,
+  networkId: state.networkId,
+  hasWeb3: state.hasWeb3,
+  accountActivities: state.accountActivities,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(ActivitiesSection));

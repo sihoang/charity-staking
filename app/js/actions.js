@@ -3,6 +3,7 @@ export const WEB3_LOCK_ACCOUNT = 'WEB3_LOCK_ACCOUNT';
 export const WEB3_AVAILABLE = 'WEB3_AVAILABLE';
 export const WEB3_NETWORK_ID = 'WEB3_NETWORK_ID';
 export const WEB3_TRST_BALANCE = 'WEB3_TRST_BALANCE';
+export const ACCOUNT_ACTIVITIES = 'ACCOUNT_ACTIVITIES';
 
 export function unlockAccount(account) {
   return { type: WEB3_UNLOCK_ACCOUNT, account };
@@ -22,4 +23,8 @@ export function findNetworkId(networkId) {
 
 export function findWeb3() {
   return { type: WEB3_AVAILABLE };
+}
+
+export function fetchAccountActivities(accountActivities) {
+  return { type: ACCOUNT_ACTIVITIES, accountActivities };
 }

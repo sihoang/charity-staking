@@ -39,7 +39,33 @@ export default function loadContract(contractName) {
 }
 
 export function getStakePayload(durationInDays, npo) {
-  const durationInSeconds = durationInDays * 24 * 60 * 60;
   assert(npo.ein.length > 0, 'EIN not found.');
-  return buildBytesInput(durationInSeconds, npo.ein);
+  // blockchain uses timestamp in seconds
+  const durationInSeconds = durationInDays * 24 * 60 * 60;
+  const lockedUntil = Math.floor(Date.now() / 1000) + durationInSeconds;
+  const payload = buildBytesInput(lockedUntil, npo.ein);
+  return payload;
+}
+
+// Given a stake payload
+// @param payload 0x<32bytes length><32bytes until in seconds><32bytes ein>
+// Normal payload string should have length of 2(0x) + 32(length) + 32(until) + 32(ein) = 98
+// @return { lockedUntil: <Date>, ein: <NPO ein> }
+export function parseStakePayload(payload) {
+  const { toBN, padRight } = web3.utils;
+  // padded to 0x<96 bytes>
+  const paddedPayload = padRight(payload, 96);
+
+  const ein = toBN(`0x${paddedPayload.substring(66, 98)}`).toString();
+
+  // convert seconds to milliseconds
+  const timestampInMilliseconds = toBN(`0x${paddedPayload.substring(34, 66)}`)
+    .mul(toBN(1000))
+    .toNumber();
+  const lockedUntil = new Date(timestampInMilliseconds).toLocaleString();
+
+  return {
+    ein,
+    lockedUntil,
+  };
 }

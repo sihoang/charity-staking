@@ -267,7 +267,6 @@ class StakeNow extends React.Component {
   }
 
   renderStep(number, text, currentStatus, txHash) {
-    console.log(txHash);
     return (
       <ListItem>
         <ListItemText
