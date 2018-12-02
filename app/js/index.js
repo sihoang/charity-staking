@@ -34,8 +34,9 @@ function App() {
 
 const onNewAccount = (account) => {
   store.dispatch(unlockAccount(account));
-  dispatchAccountActivities(store, account);
-  dispatchTRSTBalance(store, account);
+  const { dispatch } = store;
+  dispatchAccountActivities(dispatch, account);
+  dispatchTRSTBalance(dispatch, account);
 };
 
 EmbarkJS.onReady(() => {

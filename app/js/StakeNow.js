@@ -18,6 +18,7 @@ import NPOInfo from './NPOInfo';
 import loadContract, { getStakePayload } from './loadContract';
 import stateHelper, { status } from './stateHelper';
 import { txLink } from './formatter';
+import { dispatchAccountActivities } from './dispatch';
 
 const styles = theme => ({
   root: {
@@ -105,6 +106,7 @@ class StakeNow extends React.Component {
     this.startStaking();
 
     const { amount, npo, durationInDays } = this.state;
+    const { refreshAccountActivities, account } = this.props;
     const stakeAmount = web3.utils.toWei(amount.toString(), 'mwei');
     loadContract('TRST')
       .methods
@@ -120,6 +122,7 @@ class StakeNow extends React.Component {
           })
           .then(() => {
             stateHelper.setSuccess(this, stateHelper.tx.stakeTRST);
+            refreshAccountActivities(account);
           })
           .catch((err) => {
             stateHelper.setFailure(this, stateHelper.tx.stakeTRST, err);
@@ -361,4 +364,11 @@ const mapStateToProps = state => ({
   hasWeb3: state.hasWeb3,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(StakeNow));
+const mapDispatchToProps = dispatch => ({
+  refreshAccountActivities: (account) => {
+    // call helper
+    dispatchAccountActivities(dispatch, account);
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StakeNow));
