@@ -5,6 +5,7 @@ import {
   WEB3_LOCK_ACCOUNT,
   WEB3_TRST_BALANCE,
   ACCOUNT_ACTIVITIES,
+  OVERALL_STATS,
 } from './actions';
 
 const initialState = {
@@ -13,6 +14,12 @@ const initialState = {
   hasWeb3: false,
   trstBalance: '0',
   accountActivities: [],
+  overallStats: {
+    currentStakes: '0',
+    averageStakes: '0',
+    averageStakeInUSD: '0',
+    currentStakers: '0',
+  },
 };
 
 export default function web3App(state = initialState, action) {
@@ -40,6 +47,10 @@ export default function web3App(state = initialState, action) {
     case ACCOUNT_ACTIVITIES:
       return Object.assign({}, state, {
         accountActivities: action.accountActivities,
+      });
+    case OVERALL_STATS:
+      return Object.assign({}, state, {
+        overallStats: action.overallStats,
       });
     default:
       return state;

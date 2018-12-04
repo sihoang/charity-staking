@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import NumberCard from './NumberCard';
@@ -13,23 +14,25 @@ const styles = {
 
 class Dashboard extends React.Component {
   render() {
-    const { classes } = this.props;
+    const {
+      classes, currentStakes, averageStakes, averageStakesInUSD, currentStakers,
+    } = this.props;
     return (
       <div className={classes.root}>
         <NumberCard
           title="Current Stakes"
-          mainNumber="7,000,000"
+          mainNumber={currentStakes}
           mainUnit={<TRSTIcon />}
         />
         <NumberCard
-          title="Avarage stake"
-          mainNumber="1,670"
+          title="Average stake"
+          mainNumber={averageStakes}
           mainUnit={<TRSTIcon />}
-          subText="$21,310"
+          subText={averageStakesInUSD}
         />
         <NumberCard
           title="Current stakers"
-          mainNumber="1,670"
+          mainNumber={currentStakers}
           mainUnit={<Icon>people</Icon>}
         />
       </div>
@@ -37,4 +40,11 @@ class Dashboard extends React.Component {
   }
 }
 
-export default withStyles(styles)(Dashboard);
+const mapStateToProps = state => ({
+  currentStakes: state.overallStats.currentStakes,
+  averageStakes: state.overallStats.averageStakes,
+  averageStakesInUSD: state.overallStats.averageStakesInUSD,
+  currentStakers: state.overallStats.currentStakers,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Dashboard));

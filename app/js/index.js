@@ -14,6 +14,7 @@ import {
 import {
   dispatchTRSTBalance,
   dispatchAccountActivities,
+  dispatchOverallStats,
 } from './dispatch';
 
 import '../css/main.css';
@@ -42,6 +43,7 @@ const onNewAccount = (account) => {
 
 EmbarkJS.onReady(() => {
   dispatch(findWeb3());
+  dispatchOverallStats(dispatch);
 
   web3.eth.getAccounts().then((accounts) => {
     if (accounts[0]) {
@@ -74,6 +76,7 @@ EmbarkJS.onReady(() => {
 
       if (networkId !== networkVersion) {
         dispatch(findNetworkId(networkVersion));
+        dispatchOverallStats(dispatch);
         dispatchTRSTBalance(dispatch, selectedAddress);
         dispatchAccountActivities(dispatch, selectedAddress);
       }
