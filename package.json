@@ -1,5 +1,5 @@
 {
-  "name": "charity-tcr-mvp",
+  "name": "charity-tcr",
   "version": "0.0.1",
   "description": "Token Curated Registry MVP",
   "scripts": {
@@ -13,17 +13,23 @@
   "engine": {
     "node": "^10.13.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/WeTrustPlatform/charity-tcr.git"
+  },
   "author": "WeTrustPlatform",
   "license": "GPL-3.0",
   "homepage": "",
   "devDependencies": {
-    "embark": "^3.2.3",
+    "ajv": "^6.6.1",
+    "embark": "^3.2.7",
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "glob": "^7.1.3",
+    "jest": "^23.6.0",
     "npm-run-all": "^4.1.5",
     "solium": "^1.1.8",
     "webpack": "^4.25.1"
