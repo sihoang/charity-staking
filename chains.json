@@ -1,0 +1,18 @@
+{
+  "0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177": {
+    "contracts": {
+      "0xbeee34fbe84b190ba24aa4b761f38098aa07f3525b7fb1fb7d78d47f1e692833": {
+        "name": "SafeMath",
+        "address": "0xCfBce6FE7DF7BC3556A690199D4d8Cc4b30Ada91"
+      },
+      "0x235626ec49e168d5f6884956f965865affed120c88d24f8c39ce4da527201484": {
+        "name": "TRST",
+        "address": "0x21036C54e16521B8809553956123E44054120226"
+      },
+      "0xec200bc7589bea3126589ce7f3b9328cabd9a6934ad042d44df6cb8dafb1fba2": {
+        "name": "TimeLockedStaking",
+        "address": "0x4007ed250e8c1f84fD50008A6aA7c310EC88b1cA"
+      }
+    }
+  }
+}

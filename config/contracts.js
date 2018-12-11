@@ -70,13 +70,13 @@ module.exports = {
   testnet: {
     contracts: {
       TRST: {
-        address: '0x838A95A661BA3A9c314ED4951bD9Addc220A04A7',
+        address: '0x21036C54e16521B8809553956123E44054120226',
       },
       TimeLockedStaking: {
-        address: '0x9b8d8961931B271468f27bB89ceAb4C5e656d862',
+        address: '0x4007ed250e8c1f84fD50008A6aA7c310EC88b1cA',
       },
       SafeMath: {
-        address: '0x897635BC992549E9B74ACAE2dE8B857c72dF4bb5',
+        address: '0xCfBce6FE7DF7BC3556A690199D4d8Cc4b30Ada91',
       },
     },
     dappConnection: [
