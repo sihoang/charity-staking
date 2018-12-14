@@ -16,8 +16,8 @@ const glob = require('glob');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const path = require('path');
 
-const dappPath = process.env.DAPP_PATH;
-const embarkPath = process.env.EMBARK_PATH;
+const dappPath = process.env.DAPP_PATH || __dirname;
+const embarkPath = process.env.EMBARK_PATH || __dirname;
 
 const embarkAliases = require(path.join(dappPath, '.embark/embark-aliases.json'));
 const embarkAssets = require(path.join(dappPath, '.embark/embark-assets.json'));
@@ -25,6 +25,7 @@ const embarkNodeModules = path.join(embarkPath, 'node_modules');
 const embarkJson = require(path.join(dappPath, 'embark.json'));
 
 const buildDir = path.join(dappPath, embarkJson.buildDir);
+const buildTestDir = path.join(dappPath, embarkJson.buildTestDir);
 
 // it's important to `embark reset` if a pkg version is specified in
 // embark.json and changed/removed later, otherwise pkg resolution may behave
@@ -179,7 +180,16 @@ production.name = 'production';
 // export a list of named configs
 // -----------------------------------------------------------------------------
 
+const testing = cloneDeep(base);
+testing.mode = 'none';
+testing.name = 'testing';
+testing.output = {
+  filename: chunkData => chunkData.chunk.name,
+  path: buildTestDir,
+};
+
 module.exports = [
   development,
   production,
+  testing,
 ];

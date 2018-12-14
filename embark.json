@@ -7,6 +7,7 @@
     "index.html": "app/index.html"
   },
   "buildDir": "dist/",
+  "buildTestDir": "build/",
   "config": "config/",
   "versions": {
     "web3": "1.0.0-beta",
